@@ -14,7 +14,7 @@ describe Sodium do
       @base64_encoded_public_key = Base64.encode64 @public_key
     end
 
-    it "returns an encrypted and base64-encoded string", :focus do
+    it "returns an encrypted and base64-encoded string" do
       # Encrypt, using the method under test
       babse64_encrypted = subject.encrypt secret, @base64_encoded_public_key
 
