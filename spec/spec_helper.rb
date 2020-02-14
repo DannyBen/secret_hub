@@ -16,6 +16,7 @@ include SpecMixin
 ENV['SECRET_HUB_API_BASE'] = 'http://localhost:3000'
 
 # Dummy secrets for testing
+ENV['GITHUB_ACCESS_TOKEN'] = 'who took my token?'
 ENV['SECRET'] = 'there is no spoon'
 ENV['PASSWORD'] = 'there is no spoon'
 ENV['SECRET_KEY'] = 'there is no spoon'
