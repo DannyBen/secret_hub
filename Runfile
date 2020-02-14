@@ -1,0 +1,15 @@
+require "runfile-tasks"
+require "byebug"
+require_relative 'lib/secret_hub'
+
+title   "SecretHub Developer Toolbelt"
+summary "Runfile tasks for building the SecretHub gem"
+version SecretHub::VERSION
+
+RunfileTasks::RubyGems.all 'secret_hub'
+RunfileTasks::Testing.rspec
+
+help   "Run interactive console"
+action :console, :c do
+  run "bundle exec bin/console"
+end

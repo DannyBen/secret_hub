@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require "irb"
+require "irb/completion" 
+require "secret_hub"
+
+include SecretHub
+
+IRB.start
