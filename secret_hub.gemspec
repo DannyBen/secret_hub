@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.version     = SecretHub::VERSION
   s.date        = Date.today.to_s
   s.summary     = "Manage GitHub secrets over multiple repositories"
-  s.description = "Manage GitHub secrets over multiple repositories"
+  s.description = "Command line interface for managing GitHub secrets in bulk"
   s.authors     = ["Danny Ben Shitrit"]
   s.email       = 'db@dannyben.com'
   s.files       = Dir['README.md', 'lib/**/*.*']
