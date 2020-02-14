@@ -6,9 +6,9 @@ module SecretHub
       summary "Update or delete multiple secrets from multiple repositories"
       
       usage "secrethub bulk init [CONFIG]"
+      usage "secrethub bulk list [CONFIG]"
       usage "secrethub bulk save [CONFIG --clean]"
       usage "secrethub bulk clean [CONFIG]"
-      usage "secrethub bulk list [CONFIG]"
       usage "secrethub bulk (-h|--help)"
 
       command "init", "Create a sample configuration file in the current directory"
@@ -18,12 +18,13 @@ module SecretHub
 
       option "-c, --clean", "Also delete any other secret not defined in the config file"
 
-      param "CONFIG", "Path to the configuration file"
+      param "CONFIG", "Path to the configuration file [default: secrethub.yml]"
             
       example "secrethub bulk init"
       example "secrethub bulk clean"
-      example "secrethub bulk update mysecrets.yml"
-      example "secrethub bulk update --clean"
+      example "secrethub bulk list mysecrets.yml"
+      example "secrethub bulk save mysecrets.yml"
+      example "secrethub bulk save --clean"
 
       def init_command
         raise SecretHubError, "File #{config_file} already exists" if File.exist? config_file

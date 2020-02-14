@@ -1,6 +1,6 @@
 Usage:
   secrethub bulk init [CONFIG]
+  secrethub bulk list [CONFIG]
   secrethub bulk save [CONFIG --clean]
   secrethub bulk clean [CONFIG]
-  secrethub bulk list [CONFIG]
   secrethub bulk (-h|--help)
