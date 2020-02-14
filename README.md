@@ -38,7 +38,7 @@ Usage
 
 SecretHub has two families of commands:
 
-1. Commands that operate on a single repository
+1. Commands that operate on a single repository.
 2. Commands that operate on multiple repositories, and multiple secrets.
 
 ### Single repository operations
