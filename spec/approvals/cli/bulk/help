@@ -15,8 +15,8 @@ Commands:
     Save multiple secrets to multiple repositories
 
   clean
-    Delete secrets from multiple repositories unless they are specified
-    in the config file
+    Delete secrets from multiple repositories unless they are specified in the
+    config file
 
   list
     Show all secrets in all repositories
