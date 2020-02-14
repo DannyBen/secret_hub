@@ -36,6 +36,7 @@ system 'mkdir tmp' unless Dir.exist? 'tmp'
 
 # Ensure terminal width consistency across tests
 ENV['COLUMNS'] = '80'
+ENV['LINES'] = '30'
 
 # Configure rspec
 RSpec.configure do |c|
