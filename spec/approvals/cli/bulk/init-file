@@ -1,0 +1,8 @@
+---
+user/repo:
+- SECRET
+- PASSWORD
+- SECRET_KEY
+user/another-repo:
+- SECRET
+- SECRET_KEY

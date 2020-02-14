@@ -9,7 +9,7 @@ describe 'bin/secret_hub' do
 
   context "on exception" do
     it "errors gracefuly" do
-      expect(`bin/secret_hub command that errors 2>&1`).to match_fixture('cli/exception')
+      expect(`bin/secrethub list guido/python 2>&1`).to match_fixture('cli/exception')
     end
   end
 end

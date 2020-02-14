@@ -13,3 +13,21 @@ help   "Run interactive console"
 action :console, :c do
   run "bundle exec bin/console"
 end
+
+help   "Run test mock server"
+usage  "mockserver [--daemon --stop]"
+option "-d --daemon", "Run in the background"
+option "-s --stop", "Stop the server (if started with --daemon)"
+action :mockserver do |args|
+  ENV['SINATRA_ACTIVESUPPORT_WARNING'] = 'false'
+  
+  if args['--stop']
+    stop_bg 'mockserver'
+  elsif args['--daemon']
+    run_bg "ruby spec/mock_api/server.rb", pid: 'mockserver'
+  else
+    run! "ruby spec/mock_api/server.rb"
+  end
+end
+
+require './debug' if File.exist? 'debug.rb'

@@ -17,8 +17,8 @@ module SecretHub
         key = args['KEY']
         value = args['VALUE']
         
-        success = github.put_secret repo, key, value
-        say success ? "Saved !txtblu!#{repo} !txtgrn!#{key}" : "!txtred!ERROR: Failed saving secret"
+        github.put_secret repo, key, value
+        say "Saved !txtblu!#{repo} !txtpur!#{key}"
       end
     end
   end

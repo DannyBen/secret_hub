@@ -1,0 +1,22 @@
+Create or update a secret in a repository
+
+Usage:
+  secrethub save REPO KEY VALUE
+  secrethub save (-h|--help)
+
+Options:
+  -h --help
+    Show this help
+
+Parameters:
+  REPO
+    Full name of the GitHub repository (user/repo)
+
+  KEY
+    The name of the secret
+
+  VALUE
+    The plain text secret value
+
+Examples:
+  secrethub save bob/vault PASSWORD p4ssw0rd

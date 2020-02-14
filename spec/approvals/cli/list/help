@@ -1,0 +1,16 @@
+Show secrets for a repository
+
+Usage:
+  secrethub list REPO
+  secrethub list (-h|--help)
+
+Options:
+  -h --help
+    Show this help
+
+Parameters:
+  REPO
+    Full name of the GitHub repository (user/repo)
+
+Examples:
+  secrethub list bob/repo-woth-secrets

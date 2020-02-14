@@ -1,0 +1,19 @@
+Delete a secret from a repository
+
+Usage:
+  secrethub delete REPO KEY
+  secrethub delete (-h|--help)
+
+Options:
+  -h --help
+    Show this help
+
+Parameters:
+  REPO
+    Full name of the GitHub repository (user/repo)
+
+  KEY
+    The name of the secret
+
+Examples:
+  secrethub delete bob/vault PASSWORD

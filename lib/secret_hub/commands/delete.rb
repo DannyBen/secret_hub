@@ -16,7 +16,7 @@ module SecretHub
         key = args['KEY']
         
         success = github.delete_secret repo, key
-        say success ? "!txtgrn!Deleted" : "!txtred!ERROR: Failed deleting secret"
+        say "Deleted !txtblu!#{repo} !txtpur!#{key}"
       end
     end
   end

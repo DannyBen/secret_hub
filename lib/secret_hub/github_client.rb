@@ -5,16 +5,14 @@ require 'rbnacl'
 module SecretHub
   class GitHubClient
     include HTTParty
-    
-    base_uri 'https://api.github.com'
+
+    def initialize
+      self.class.base_uri ENV['SECRET_HUB_API_BASE'] || 'https://api.github.com'
+    end
 
     # GET /repos/:owner/:repo/actions/secrets/public-key
     def public_key(repo)
       public_keys[repo] ||= get("/repos/#{repo}/actions/secrets/public-key")
-    end
-
-    def public_keys
-      @public_keys ||= {}
     end
 
     # GET /repos/:owner/:repo/actions/secrets
@@ -38,6 +36,10 @@ module SecretHub
     end
 
   private
+
+    def public_keys
+      @public_keys ||= {}
+    end
 
     def encrypt_for_repo(repo, secret)
       public_key = public_key(repo)['key']
