@@ -35,7 +35,7 @@ ENV['SECRET_KEY'] = 'there is no spoon'
 system 'mkdir tmp' unless Dir.exist? 'tmp'
 
 # Ensure terminal width consistency across tests
-ENV['COLUMNS'] = 80
+ENV['COLUMNS'] = '80'
 
 # Configure rspec
 RSpec.configure do |c|
