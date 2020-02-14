@@ -22,6 +22,13 @@ ENV['SECRET_KEY'] = 'there is no spoon'
 
 system 'mkdir tmp' unless Dir.exist? 'tmp'
 
+# We nened our server to test
+begin
+  HTTParty.get 'http://localhost:3000'
+rescue Errno::ECONNREFUSED
+  abort "\n==> ERROR: Please start the mock server using `run mockserver`\n\n"
+end
+
 RSpec.configure do |c|
   c.fixtures_path = 'spec/approvals'
   c.include SpecMixin

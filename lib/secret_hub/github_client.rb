@@ -1,9 +1,9 @@
-require "base64"
 require 'httparty'
-require 'rbnacl'
+require 'secret_hub/sodium'
 
 module SecretHub
   class GitHubClient
+    include Sodium
     include HTTParty
 
     def initialize
@@ -44,16 +44,6 @@ module SecretHub
     def encrypt_for_repo(repo, secret)
       public_key = public_key(repo)['key']
       encrypt secret, public_key
-    end
-
-    def encrypt(secret, public_key)
-      key = Base64.decode64 public_key
-      public_key = RbNaCl::PublicKey.new key
-
-      box = RbNaCl::Boxes::Sealed.from_public_key public_key
-      encrypted_secret = box.encrypt secret
-
-      Base64.strict_encode64 encrypted_secret
     end
 
     def get(url)
