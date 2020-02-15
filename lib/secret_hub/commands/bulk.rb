@@ -40,13 +40,10 @@ module SecretHub
       end
 
       def show_command
-        visible = args['--visible']
-
         config.each do |repo, secrets|
           say "!txtblu!#{repo}:"
           secrets.each do |key, value|
-            value = value.obfuscate unless visible
-            say "  !txtpur!#{key}: !txtcyn!#{value}"
+            show_secret key, value, args['--visible']
           end
         end
       end
@@ -62,12 +59,15 @@ module SecretHub
 
       def save_command
         clean = args['--clean']
+        skipped = 0
 
         config.each do |repo, secrets|
           say "!txtblu!#{repo}"
-          update_repo repo, secrets
+          skipped += update_repo repo, secrets
           clean_repo repo, secrets.keys if clean
         end
+
+        say "\nSkipped #{skipped} missing secrets" if skipped > 0
       end
 
       def clean_command
@@ -91,10 +91,28 @@ module SecretHub
       end
 
       def update_repo(repo, secrets)
+        skipped = 0
+
         secrets.each do |key, value|
           say "save    !txtpur!#{key}  "
-          github.put_secret repo, key, value
-          say "!txtgrn!OK"
+          if value
+            github.put_secret repo, key, value
+            say "!txtgrn!OK"
+          else
+            say "!txtred!MISSING"
+            skipped += 1
+          end
+        end
+
+        skipped
+      end
+
+      def show_secret(key, value, visible)
+        if value
+          value = value.obfuscate unless visible
+          say "  !txtpur!#{key}: !txtcyn!#{value}"
+        else
+          say "  !txtpur!#{key}: !txtred!*MISSING*"
         end
       end
 

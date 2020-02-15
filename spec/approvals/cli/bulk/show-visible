@@ -4,4 +4,4 @@ user/repo:
   SECRET_KEY: 7h15-15-50m3-24nd0m-54mp13-k3y
 user/array-repo:
   SECRET_KEY: 7h15-15-50m3-24nd0m-54mp13-k3y
-  SECRET_ID: n00b
+  SECRET_ID: *MISSING*

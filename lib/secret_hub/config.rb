@@ -40,15 +40,10 @@ module SecretHub
       secrets = [] unless secrets
       
       if secrets.is_a? Hash
-        secrets.map { |key, value| [key, value || value_from_env(key)] }.to_h
+        secrets.map { |key, value| [key, value || ENV[key]] }.to_h
       elsif secrets.is_a? Array
-        secrets.map { |key| [key, value_from_env(key)] }.to_h
+        secrets.map { |key| [key, ENV[key]] }.to_h
       end
-
-    end
-
-    def value_from_env(key)
-      ENV[key] || raise(MissingSecretError, "Please set the #{key} environment variable")
     end
   end
 end
