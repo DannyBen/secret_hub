@@ -1,6 +1,6 @@
-user/repo
-PASSWORD
-SECRET
-user/another-repo
-PASSWORD
-SECRET
+user/repo:
+- PASSWORD
+- SECRET
+user/another-repo:
+- PASSWORD
+- SECRET

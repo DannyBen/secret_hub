@@ -12,9 +12,9 @@ module SecretHub
 
       def run
         repo = args['REPO']
-        say "!txtblu!#{repo}"
+        say "!txtblu!#{repo}:"
         github.secrets(repo).each do |secret|
-          say "!txtpur!#{secret}"
+          say "- !txtpur!#{secret}"
         end
       end
     end
