@@ -41,38 +41,45 @@ SecretHub has two families of commands:
 1. Commands that operate on a single repository.
 2. Commands that operate on multiple repositories, and multiple secrets.
 
-### Single repository operations
+Most commands are self explanatory, and described by the CLI.
 
-#### Show the secret keys in a repository
+```shell
+$ secrethub --help
+```
+
+Single repository operations
+--------------------------------------------------
+
+### Show the secret keys in a repository
 
 ```shell
 # secrethub list REPO
 $ secrethub list you/your-repo
 ```
 
-#### Create or update a secret in a repository
+### Create or update a secret in a repository
 
 ```shell
 # secrethub save REPO KEY VALUE
 $ secrethub list you/your-repo SECRET "there is no spoon"
 ```
 
-#### Delete a secret from a repository
+### Delete a secret from a repository
 
 ```shell
 # secrethub delete REPO KEY
 $ secrethub list you/your-repo SECRET
 ```
 
-### Bulk operations
 
-All the bulk operations function by:
+Bulk operations
+--------------------------------------------------
 
-1. Having a config file specifying the list of repositories, and their
-   expected secret keys.
-2. Having all the secrets set up as environment variables.
+All the bulk operations function by using a simple YAML configuration file.
+The configuration file includes a list of GitHub repositories, each with a
+list of its secrets.
 
-A typical config file looks like this:
+For example:
 
 ```yaml
 # secrethub.yml
@@ -86,21 +93,71 @@ user/another-repo:
 - SECRET_KEY
 ```
 
-#### Create a sample configuration file
+Each list of secrets can either be an array, or a hash.
+
+### Using array syntax
+
+All secrets must be defined as environment variables.
+
+```yaml
+user/repo:
+- SECRET
+- PASSWORD
+```
+
+### Using hash syntax
+
+Each secret may define its value, or leave it blank. When a secret value is
+blank, it will be loaded from the environment.
+
+```yaml
+user/another-repo:
+  SECRET:
+  PASSWORD: p4ssw0rd
+```
+
+### Using YAML anchors
+
+SecretHub ignores any key that does not look like a repository (does not
+include a slash `/`). Using this feature, you can define reusable YAML
+anchors:
+
+```yaml
+docker: &docker
+  DOCKER_USER:
+  DOCKER_PASSWORD:
+
+user/another-repo:
+  <<: *docker
+  SECRET:
+  PASSWORD: p4ssw0rd
+```
+
+Note that YAML anchors only work with the hash syntax.
+
+
+### Create a sample configuration file
 
 ```shell
 # secrethub bulk init [CONFIG]
 $ secrethub bulk init mysecrets.yml
 ```
 
-#### Show all secrets in all repositories
+### Show the configuration file and its secrets
+
+```shell
+# secrethub bulk show [CONFIG --visible]
+$ secrethub bulk show mysecrets.yml
+```
+
+### Show all secrets stored on GitHub in all repositories
 
 ```shell
 # secrethub bulk list [CONFIG]
 $ secrethub bulk list mysecrets.yml
 ```
 
-#### Save multiple secrets to multiple repositories
+### Save multiple secrets to multiple repositories
 
 ```shell
 # secrethub bulk save [CONFIG --clean]
@@ -111,7 +168,7 @@ Using the `--clean` flag, you can ensure that the repositories do not have
 any secrets that you are unaware of. This flag will delete any secret that is
 not specified in your config file.
 
-#### Delete secrets from multiple repositories unless they are specified in the config file
+### Delete secrets from multiple repositories unless they are specified in the config file
 
 ```shell
 # secrethub bulk clean [CONFIG]
