@@ -9,4 +9,6 @@ user/array-repo
 save    SECRET_KEY  
 OK
 save    SECRET_ID  
-OK
+MISSING
+
+Skipped 1 missing secrets

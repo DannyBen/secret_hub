@@ -9,8 +9,10 @@ user/array-repo
 save    SECRET_KEY  
 OK
 save    SECRET_ID  
-OK
+MISSING
 delete  PASSWORD  
 OK
 delete  SECRET  
 OK
+
+Skipped 1 missing secrets

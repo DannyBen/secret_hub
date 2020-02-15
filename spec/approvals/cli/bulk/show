@@ -4,4 +4,4 @@ user/repo:
   SECRET_KEY: ******************m-54mp13-k3y
 user/array-repo:
   SECRET_KEY: ******************m-54mp13-k3y
-  SECRET_ID: ****
+  SECRET_ID: *MISSING*
