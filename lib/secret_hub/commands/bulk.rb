@@ -40,17 +40,10 @@ module SecretHub
       end
 
       def show_command
-        visible = args['--visible']
-
         config.each do |repo, secrets|
           say "!txtblu!#{repo}:"
           secrets.each do |key, value|
-            if value
-              value = value.obfuscate unless visible
-              say "  !txtpur!#{key}: !txtcyn!#{value}"
-            else
-              say "  !txtpur!#{key}: !txtred!*MISSING*"
-            end
+            show_secret key, value, args['--visible']
           end
         end
       end
@@ -112,6 +105,15 @@ module SecretHub
         end
 
         skipped
+      end
+
+      def show_secret(key, value, visible)
+        if value
+          value = value.obfuscate unless visible
+          say "  !txtpur!#{key}: !txtcyn!#{value}"
+        else
+          say "  !txtpur!#{key}: !txtred!*MISSING*"
+        end
       end
 
       def config_file
