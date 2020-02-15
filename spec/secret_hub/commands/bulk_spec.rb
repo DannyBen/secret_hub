@@ -41,7 +41,7 @@ describe 'bin/secrethub bulk' do
       expect { subject.run %W[bulk show #{config_file}] }.to output_fixture('cli/bulk/show')
     end
 
-    context "--visible" do
+    describe "--visible" do
       it "shows the local configuration file and revealed secrets" do
         expect { subject.run %W[bulk show #{config_file} --visible] }.to output_fixture('cli/bulk/show-visible')
       end      
