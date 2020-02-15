@@ -2,6 +2,7 @@ Update or delete multiple secrets from multiple repositories
 
 Usage:
   secrethub bulk init [CONFIG]
+  secrethub bulk show [CONFIG --visible]
   secrethub bulk list [CONFIG]
   secrethub bulk save [CONFIG --clean]
   secrethub bulk clean [CONFIG]
@@ -10,6 +11,9 @@ Usage:
 Commands:
   init
     Create a sample configuration file in the current directory
+
+  show
+    Show the configuration file
 
   save
     Save multiple secrets to multiple repositories
@@ -23,7 +27,10 @@ Commands:
 
 Options:
   -c, --clean
-    Also delete any other secret not defined in the config file
+    Also delete any other secret not defined in the configuration file
+
+  -v, --visible
+    Also show secret values
 
   -h --help
     Show this help
@@ -34,6 +41,7 @@ Parameters:
 
 Examples:
   secrethub bulk init
+  secrethub bulk show --visible
   secrethub bulk clean
   secrethub bulk list mysecrets.yml
   secrethub bulk save mysecrets.yml

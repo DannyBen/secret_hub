@@ -28,8 +28,9 @@ end
 # Dummy secrets for testing
 ENV['GITHUB_ACCESS_TOKEN'] = 'who took my token?'
 ENV['SECRET'] = 'there is no spoon'
-ENV['PASSWORD'] = 'there is no spoon'
-ENV['SECRET_KEY'] = 'there is no spoon'
+ENV['PASSWORD'] = 'p4ssw0rd'
+ENV['SECRET_KEY'] = '7h15-15-50m3-24nd0m-54mp13-k3y'
+ENV['SECRET_ID'] = 'n00b'
 
 # Make some place for testing
 system 'mkdir tmp' unless Dir.exist? 'tmp'

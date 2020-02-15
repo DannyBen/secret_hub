@@ -1,4 +1,6 @@
 user/repo
-user/another-repo
-delete PASSWORD 
+user/array-repo
+delete  PASSWORD  
+OK
+delete  SECRET  
 OK

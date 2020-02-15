@@ -76,7 +76,7 @@ module SecretHub
     end
 
     def secret_token
-      ENV['GITHUB_ACCESS_TOKEN'] || raise(EnvironmentError, "Please set GITHUB_ACCESS_TOKEN")
+      ENV['GITHUB_ACCESS_TOKEN'] || raise(ConfigurationError, "Please set GITHUB_ACCESS_TOKEN")
     end
 
   end
