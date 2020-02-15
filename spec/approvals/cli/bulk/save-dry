@@ -1,0 +1,19 @@
+user/repo
+save    SECRET  
+OK
+save    PASSWORD  
+OK
+save    SECRET_KEY  
+OK
+user/array-repo
+save    SECRET_KEY  
+OK
+save    SECRET_ID  
+MISSING
+delete  PASSWORD  
+OK
+delete  SECRET  
+OK
+
+Skipped 1 missing secrets
+Dry run, nothing happened

@@ -41,7 +41,7 @@ describe 'bin/secrethub bulk' do
       expect { subject.run %W[bulk show #{config_file}] }.to output_fixture('cli/bulk/show')
     end
 
-    context "with --visible" do
+    describe "--visible" do
       it "shows the local configuration file and revealed secrets" do
         expect { subject.run %W[bulk show #{config_file} --visible] }.to output_fixture('cli/bulk/show-visible')
       end      
@@ -60,6 +60,14 @@ describe 'bin/secrethub bulk' do
         expect { subject.run %W[bulk save #{config_file} --clean] }.to output_fixture('cli/bulk/save-clean')
       end
     end
+
+    describe "--dry" do
+      it "shows but does not save anything" do
+        expect_any_instance_of(GitHubClient).not_to receive(:put_secret)
+        expect_any_instance_of(GitHubClient).not_to receive(:delete_secret)
+        expect { subject.run %W[bulk save #{config_file} --clean --dry] }.to output_fixture('cli/bulk/save-dry')
+      end
+    end
   end
 
   describe "clean" do
@@ -69,5 +77,11 @@ describe 'bin/secrethub bulk' do
       expect { subject.run %W[bulk clean #{config_file}] }.to output_fixture('cli/bulk/clean')
     end
 
+    describe "--dry" do
+      it "shows but does not clean anything" do
+        expect_any_instance_of(GitHubClient).not_to receive(:delete_secret)
+        expect { subject.run %W[bulk clean #{config_file} --dry] }.to output_fixture('cli/bulk/clean-dry')
+      end
+    end
   end
 end
