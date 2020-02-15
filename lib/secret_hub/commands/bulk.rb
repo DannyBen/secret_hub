@@ -1,4 +1,4 @@
-require 'yaml'
+require 'fileutils'
 
 module SecretHub
   module Commands
@@ -28,18 +28,12 @@ module SecretHub
 
       def init_command
         raise SecretHubError, "File #{config_file} already exists" if File.exist? config_file
-
-        content = {
-          "user/repo" => %w[SECRET PASSWORD SECRET_KEY],
-          "user/another-repo" => %w[SECRET SECRET_KEY],
-        }
-
-        File.write config_file, content.to_yaml
+        FileUtils.cp config_template, config_file
         say "!txtgrn!Saved #{config_file}"
       end
 
       def list_command
-        config.each do |repo, keys|
+        config.each_repo do |repo|
           say "!txtblu!#{repo}:"
           github.secrets(repo).each do |secret|
             say "- !txtpur!#{secret}"
@@ -50,17 +44,17 @@ module SecretHub
       def save_command
         clean = args['--clean']
 
-        config.each do |repo, keys|
+        config.each do |repo, secrets|
           say "!txtblu!#{repo}"
-          update_repo repo, keys
-          clean_repo repo, keys if clean
+          update_repo repo, secrets
+          clean_repo repo, secrets.keys if clean
         end
       end
 
       def clean_command
-        config.each do |repo, keys|
+        config.each do |repo, secrets|
           say "!txtblu!#{repo}"
-          clean_repo repo, keys
+          clean_repo repo, secrets.keys
         end
       end
 
@@ -71,22 +65,18 @@ module SecretHub
         delete_candidates = repo_keys - keys
 
         delete_candidates.each do |key|
-          say "delete !txtpur!#{key} "
+          say "delete  !txtpur!#{key}  "
           success = github.delete_secret repo, key
           say "!txtgrn!OK"
         end
       end
 
-      def update_repo(repo, keys)
-        keys.each do |key|
-          say "save   !txtpur!#{key} "
-          github.put_secret repo, key, secret_value(key)
+      def update_repo(repo, secrets)
+        secrets.each do |key, value|
+          say "save    !txtpur!#{key}  "
+          github.put_secret repo, key, value
           say "!txtgrn!OK"
         end
-      end
-
-      def secret_value(key)
-        ENV[key] || raise(EnvironmentError, "Please set the #{key} environment variable")
       end
 
       def config_file
@@ -94,9 +84,11 @@ module SecretHub
       end
 
       def config
-        raise ConfigurationError, "Config file not found #{config_flie}" unless File.exist? config_file
-        result = YAML.load_file config_file
-        result.transform_values { |v| v || [] }
+        @config ||= Config.load config_file
+      end
+
+      def config_template
+        File.expand_path '../config-template.yml', __dir__
       end
     end
   end

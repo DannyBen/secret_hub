@@ -30,6 +30,7 @@ ENV['GITHUB_ACCESS_TOKEN'] = 'who took my token?'
 ENV['SECRET'] = 'there is no spoon'
 ENV['PASSWORD'] = 'there is no spoon'
 ENV['SECRET_KEY'] = 'there is no spoon'
+ENV['SECRET_ID'] = 'there is no spoon'
 
 # Make some place for testing
 system 'mkdir tmp' unless Dir.exist? 'tmp'

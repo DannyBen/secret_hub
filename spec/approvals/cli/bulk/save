@@ -1,12 +1,12 @@
 user/repo
-save   SECRET 
+save    SECRET  
 OK
-save   PASSWORD 
+save    PASSWORD  
 OK
-save   SECRET_KEY 
+save    SECRET_KEY  
 OK
-user/another-repo
-save   SECRET 
+user/array-repo
+save    SECRET_KEY  
 OK
-save   SECRET_KEY 
+save    SECRET_ID  
 OK

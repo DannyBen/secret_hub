@@ -1,6 +1,6 @@
 user/repo:
 - PASSWORD
 - SECRET
-user/another-repo:
+user/array-repo:
 - PASSWORD
 - SECRET
