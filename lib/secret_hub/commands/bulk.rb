@@ -38,6 +38,15 @@ module SecretHub
         say "!txtgrn!Saved #{config_file}"
       end
 
+      def list_command
+        config.each do |repo, keys|
+          say "!txtblu!#{repo}:"
+          github.secrets(repo).each do |secret|
+            say "- !txtpur!#{secret}"
+          end
+        end
+      end
+
       def save_command
         clean = args['--clean']
 
@@ -55,15 +64,6 @@ module SecretHub
         end
       end
 
-      def list_command
-        config.each do |repo, keys|
-          say "!txtblu!#{repo}"
-          github.secrets(repo).each do |secret|
-            say "!txtpur!#{secret}"
-          end
-        end
-      end
-    
     private
 
       def clean_repo(repo, keys)
@@ -96,10 +96,7 @@ module SecretHub
       def config
         raise ConfigurationError, "Config file not found #{config_flie}" unless File.exist? config_file
         result = YAML.load_file config_file
-        result.each do |key, value|
-          raise ConfigurationError, "Invalid repo #{key}" unless key.include? '/'
-          raise ConfigurationError, "Invalid keys for #{key} - must be an array" unless value.is_a? Array
-        end
+        result.transform_values { |v| v || [] }
       end
     end
   end
