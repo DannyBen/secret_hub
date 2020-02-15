@@ -4,8 +4,8 @@ Usage:
   secrethub bulk init [CONFIG]
   secrethub bulk show [CONFIG --visible]
   secrethub bulk list [CONFIG]
-  secrethub bulk save [CONFIG --clean]
-  secrethub bulk clean [CONFIG]
+  secrethub bulk save [CONFIG --clean --dry]
+  secrethub bulk clean [CONFIG --dry]
   secrethub bulk (-h|--help)
 
 Commands:
@@ -32,6 +32,9 @@ Options:
   -v, --visible
     Also show secret values
 
+  -d, --dry
+    Dry run
+
   -h --help
     Show this help
 
@@ -44,5 +47,5 @@ Examples:
   secrethub bulk show --visible
   secrethub bulk clean
   secrethub bulk list mysecrets.yml
-  secrethub bulk save mysecrets.yml
+  secrethub bulk save mysecrets.yml --dry
   secrethub bulk save --clean

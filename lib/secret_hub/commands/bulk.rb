@@ -11,8 +11,8 @@ module SecretHub
       usage "secrethub bulk init [CONFIG]"
       usage "secrethub bulk show [CONFIG --visible]"
       usage "secrethub bulk list [CONFIG]"
-      usage "secrethub bulk save [CONFIG --clean]"
-      usage "secrethub bulk clean [CONFIG]"
+      usage "secrethub bulk save [CONFIG --clean --dry]"
+      usage "secrethub bulk clean [CONFIG --dry]"
       usage "secrethub bulk (-h|--help)"
 
       command "init", "Create a sample configuration file in the current directory"
@@ -23,6 +23,7 @@ module SecretHub
 
       option "-c, --clean", "Also delete any other secret not defined in the configuration file"
       option "-v, --visible", "Also show secret values"
+      option "-d, --dry", "Dry run"
 
       param "CONFIG", "Path to the configuration file [default: secrethub.yml]"
             
@@ -30,7 +31,7 @@ module SecretHub
       example "secrethub bulk show --visible"
       example "secrethub bulk clean"
       example "secrethub bulk list mysecrets.yml"
-      example "secrethub bulk save mysecrets.yml"
+      example "secrethub bulk save mysecrets.yml --dry"
       example "secrethub bulk save --clean"
 
       def init_command
@@ -58,45 +59,51 @@ module SecretHub
       end
 
       def save_command
-        clean = args['--clean']
+        dry = args['--dry']
         skipped = 0
 
         config.each do |repo, secrets|
           say "!txtblu!#{repo}"
-          skipped += update_repo repo, secrets
-          clean_repo repo, secrets.keys if clean
+          skipped += update_repo repo, secrets, dry
+          clean_repo repo, secrets.keys, dry if args['--clean']
         end
 
-        say "\nSkipped #{skipped} missing secrets" if skipped > 0
+        puts "\n" if skipped > 0 or dry
+        say "Skipped #{skipped} missing secrets" if skipped > 0
+        say "Dry run, nothing happened" if dry
       end
 
       def clean_command
+        dry = args['--dry']
+
         config.each do |repo, secrets|
           say "!txtblu!#{repo}"
-          clean_repo repo, secrets.keys
+          clean_repo repo, secrets.keys, dry
         end
+
+        say "\nDry run, nothing happened" if dry
       end
 
     private
 
-      def clean_repo(repo, keys)
+      def clean_repo(repo, keys, dry)
         repo_keys = github.secrets repo
         delete_candidates = repo_keys - keys
 
         delete_candidates.each do |key|
           say "delete  !txtpur!#{key}  "
-          success = github.delete_secret repo, key
+          github.delete_secret repo, key unless dry
           say "!txtgrn!OK"
         end
       end
 
-      def update_repo(repo, secrets)
+      def update_repo(repo, secrets, dry)
         skipped = 0
 
         secrets.each do |key, value|
           say "save    !txtpur!#{key}  "
           if value
-            github.put_secret repo, key, value
+            github.put_secret repo, key, value unless dry
             say "!txtgrn!OK"
           else
             say "!txtred!MISSING"

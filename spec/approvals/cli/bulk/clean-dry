@@ -1,0 +1,8 @@
+user/repo
+user/array-repo
+delete  PASSWORD  
+OK
+delete  SECRET  
+OK
+
+Dry run, nothing happened
