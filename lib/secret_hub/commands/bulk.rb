@@ -1,26 +1,33 @@
 require 'fileutils'
+require 'secret_hub/refinements/string_obfuscation'
 
 module SecretHub
   module Commands
     class Bulk < Base
+      using StringObfuscation
+
       summary "Update or delete multiple secrets from multiple repositories"
       
       usage "secrethub bulk init [CONFIG]"
+      usage "secrethub bulk show [CONFIG --visible]"
       usage "secrethub bulk list [CONFIG]"
       usage "secrethub bulk save [CONFIG --clean]"
       usage "secrethub bulk clean [CONFIG]"
       usage "secrethub bulk (-h|--help)"
 
       command "init", "Create a sample configuration file in the current directory"
+      command "show", "Show the configuration file"
       command "save", "Save multiple secrets to multiple repositories"
       command "clean", "Delete secrets from multiple repositories unless they are specified in the config file"
       command "list", "Show all secrets in all repositories"
 
-      option "-c, --clean", "Also delete any other secret not defined in the config file"
+      option "-c, --clean", "Also delete any other secret not defined in the configuration file"
+      option "-v, --visible", "Also show secret values"
 
       param "CONFIG", "Path to the configuration file [default: secrethub.yml]"
             
       example "secrethub bulk init"
+      example "secrethub bulk show --visible"
       example "secrethub bulk clean"
       example "secrethub bulk list mysecrets.yml"
       example "secrethub bulk save mysecrets.yml"
@@ -30,6 +37,18 @@ module SecretHub
         raise SecretHubError, "File #{config_file} already exists" if File.exist? config_file
         FileUtils.cp config_template, config_file
         say "!txtgrn!Saved #{config_file}"
+      end
+
+      def show_command
+        visible = args['--visible']
+
+        config.each do |repo, secrets|
+          say "!txtblu!#{repo}:"
+          secrets.each do |key, value|
+            value = value.obfuscate unless visible
+            say "  !txtpur!#{key}: !txtcyn!#{value}"
+          end
+        end
       end
 
       def list_command

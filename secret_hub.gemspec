@@ -22,4 +22,5 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'httparty', '~> 0.17'
   s.add_runtime_dependency 'lp', '~> 0.2'
   s.add_runtime_dependency 'rbnacl', '~> 7.1'
+  s.add_runtime_dependency 'string-obfuscator', '~> 0.1'
 end
