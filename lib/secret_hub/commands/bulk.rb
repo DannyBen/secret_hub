@@ -24,7 +24,7 @@ module SecretHub
       option "-c, --clean", "Also delete any other secret not defined in the configuration file"
       option "-v, --visible", "Also show secret values"
       option "-d, --dry", "Dry run"
-      option "-o, --only APP", "Save all secrets to a single repository from the configuration file"
+      option "-o, --only REPO", "Save all secrets to a single repository from the configuration file"
 
       param "CONFIG", "Path to the configuration file [default: secrethub.yml]"
             

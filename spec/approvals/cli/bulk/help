@@ -35,7 +35,7 @@ Options:
   -d, --dry
     Dry run
 
-  -o, --only APP
+  -o, --only REPO
     Save all secrets to a single repository from the configuration file
 
   -h --help
