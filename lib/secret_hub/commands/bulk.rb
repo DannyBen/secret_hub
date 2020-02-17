@@ -11,7 +11,7 @@ module SecretHub
       usage "secrethub bulk init [CONFIG]"
       usage "secrethub bulk show [CONFIG --visible]"
       usage "secrethub bulk list [CONFIG]"
-      usage "secrethub bulk save [CONFIG --clean --dry]"
+      usage "secrethub bulk save [CONFIG --clean --dry --only REPO]"
       usage "secrethub bulk clean [CONFIG --dry]"
       usage "secrethub bulk (-h|--help)"
 
@@ -24,6 +24,7 @@ module SecretHub
       option "-c, --clean", "Also delete any other secret not defined in the configuration file"
       option "-v, --visible", "Also show secret values"
       option "-d, --dry", "Dry run"
+      option "-o, --only REPO", "Save all secrets to a single repository from the configuration file"
 
       param "CONFIG", "Path to the configuration file [default: secrethub.yml]"
             
@@ -33,6 +34,7 @@ module SecretHub
       example "secrethub bulk list mysecrets.yml"
       example "secrethub bulk save mysecrets.yml --dry"
       example "secrethub bulk save --clean"
+      example "secrethub bulk save --only me/my-important-repo"
 
       def init_command
         raise SecretHubError, "File #{config_file} already exists" if File.exist? config_file
@@ -60,9 +62,11 @@ module SecretHub
 
       def save_command
         dry = args['--dry']
+        only = args['--only']
         skipped = 0
 
         config.each do |repo, secrets|
+          next if only and repo != only
           say "!txtblu!#{repo}"
           skipped += update_repo repo, secrets, dry
           clean_repo repo, secrets.keys, dry if args['--clean']

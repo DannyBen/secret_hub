@@ -4,7 +4,7 @@ Usage:
   secrethub bulk init [CONFIG]
   secrethub bulk show [CONFIG --visible]
   secrethub bulk list [CONFIG]
-  secrethub bulk save [CONFIG --clean --dry]
+  secrethub bulk save [CONFIG --clean --dry --only REPO]
   secrethub bulk clean [CONFIG --dry]
   secrethub bulk (-h|--help)
 
@@ -35,6 +35,9 @@ Options:
   -d, --dry
     Dry run
 
+  -o, --only REPO
+    Save all secrets to a single repository from the configuration file
+
   -h --help
     Show this help
 
@@ -49,3 +52,4 @@ Examples:
   secrethub bulk list mysecrets.yml
   secrethub bulk save mysecrets.yml --dry
   secrethub bulk save --clean
+  secrethub bulk save --only me/my-important-repo

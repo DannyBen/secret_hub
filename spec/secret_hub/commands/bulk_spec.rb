@@ -68,6 +68,12 @@ describe 'bin/secrethub bulk' do
         expect { subject.run %W[bulk save #{config_file} --clean --dry] }.to output_fixture('cli/bulk/save-dry')
       end
     end
+
+    describe "--only REPO" do
+      it "saves all variables to one repo only" do
+        expect { subject.run %W[bulk save #{config_file} --only user/repo] }.to output_fixture('cli/bulk/save-only')
+      end
+    end
   end
 
   describe "clean" do

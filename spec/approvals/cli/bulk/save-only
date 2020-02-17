@@ -1,0 +1,7 @@
+user/repo
+save    SECRET  
+OK
+save    PASSWORD  
+OK
+save    SECRET_KEY  
+OK
