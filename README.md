@@ -160,7 +160,7 @@ $ secrethub bulk list mysecrets.yml
 ### Save multiple secrets to multiple repositories
 
 ```shell
-# secrethub bulk save [CONFIG --clean]
+# secrethub bulk save [CONFIG --clean --dry --only REPO]
 $ secrethub bulk save mysecrets.yml --clean
 ```
 
