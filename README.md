@@ -68,7 +68,7 @@ $ secrethub list you/your-repo SECRET "there is no spoon"
 
 ```shell
 # secrethub delete REPO KEY
-$ secrethub list you/your-repo SECRET
+$ secrethub delete you/your-repo SECRET
 ```
 
 
@@ -127,7 +127,7 @@ docker: &docker
   DOCKER_USER:
   DOCKER_PASSWORD:
 
-user/another-repo:
+user/repo:
   <<: *docker
   SECRET:
   PASSWORD: p4ssw0rd
