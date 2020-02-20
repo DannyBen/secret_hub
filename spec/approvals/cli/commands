@@ -5,3 +5,5 @@ Commands:
   save    Create or update a secret in a repository
   delete  Delete a secret from a repository
   bulk    Update or delete multiple secrets from multiple repositories
+
+Run secrethub COMMAND --help for command specific help
