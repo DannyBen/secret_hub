@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  secrethub:
+    build: .
+    image: dannyben/secrethub
+    environment:
+      GITHUB_ACCESS_TOKEN:
+    volumes:
+    - .:/app

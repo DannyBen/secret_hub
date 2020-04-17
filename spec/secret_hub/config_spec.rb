@@ -8,6 +8,15 @@ describe Config do
     it "loads config from file" do
       expect(subject.to_h.keys).to eq ["user/repo", "user/array-repo"]
     end
+
+    context "when the file does not exist" do
+      let(:config_file) { 'no-such-config-file.yml' }
+
+      it "raises ConfigurationError" do
+
+        expect { described_class.load config_file }.to raise_error(ConfigurationError)
+      end
+    end
   end
 
   describe '#each' do
