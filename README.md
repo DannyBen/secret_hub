@@ -1,5 +1,4 @@
-SecretHub - GitHub Secrets CLI
-==================================================
+# SecretHub - GitHub Secrets CLI
 
 [![Gem Version](https://badge.fury.io/rb/secret_hub.svg)](https://badge.fury.io/rb/secret_hub)
 [![Build Status](https://github.com/DannyBen/secret_hub/workflows/Test/badge.svg)](https://github.com/DannyBen/secret_hub/actions?query=workflow%3ATest)
@@ -12,16 +11,21 @@ with support for bulk operations.
 
 ---
 
-Installation
---------------------------------------------------
+## Installation
+
+With Ruby:
 
 ```shell
 $ gem install secret_hub
 ```
 
+Or with Docker:
 
-Prerequisites
---------------------------------------------------
+```shell
+$ alias secrethub='docker run --rm -it -e GITHUB_ACCESS_TOKEN -v $PWD:/app dannyben/secrethub'
+```
+
+## Prerequisites
 
 SecretHub is a wrapper around the [GitHub Secrets API][secrets-api]. To use
 it, you need to set up your environment with a
@@ -33,8 +37,7 @@ $ export GITHUB_ACCESS_TOKEN=<your access token>
 ```
 
 
-Usage
---------------------------------------------------
+## Usage
 
 SecretHub has two families of commands:
 
@@ -47,8 +50,7 @@ Most commands are self explanatory, and described by the CLI.
 $ secrethub --help
 ```
 
-Single repository operations
---------------------------------------------------
+## Single repository operations
 
 ### Show the secret keys in a repository
 
@@ -71,9 +73,7 @@ $ secrethub list you/your-repo SECRET "there is no spoon"
 $ secrethub delete you/your-repo SECRET
 ```
 
-
-Bulk operations
---------------------------------------------------
+## Bulk operations
 
 All the bulk operations function by using a simple YAML configuration file.
 The configuration file includes a list of GitHub repositories, each with a
@@ -176,8 +176,7 @@ $ secrethub bulk clean mysecrets.yml
 ```
 
 
-Contributing / Support
---------------------------------------------------
+## Contributing / Support
 
 If you experience any issue, have a question or a suggestion, or if you wish
 to contribute, feel free to [open an issue][issues].
