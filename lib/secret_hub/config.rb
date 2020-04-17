@@ -5,7 +5,7 @@ module SecretHub
     attr_reader :data
 
     def self.load(config_file)
-      raise ConfigurationError, "Config file not found #{config_flie}" unless File.exist? config_file
+      raise ConfigurationError, "Config file not found #{config_file}" unless File.exist? config_file
       new YAML.load_file config_file
     end
 
