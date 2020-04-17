@@ -13,7 +13,6 @@ describe Config do
       let(:config_file) { 'no-such-config-file.yml' }
 
       it "raises ConfigurationError" do
-
         expect { described_class.load config_file }.to raise_error(ConfigurationError)
       end
     end
