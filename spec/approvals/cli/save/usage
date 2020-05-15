@@ -1,3 +1,0 @@
-Usage:
-  secrethub save REPO KEY VALUE
-  secrethub save (-h|--help)

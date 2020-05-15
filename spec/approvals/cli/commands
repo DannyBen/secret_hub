@@ -1,9 +1,8 @@
 GitHub Secret Manager
 
 Commands:
-  list    Show secrets for a repository
-  save    Create or update a secret in a repository
-  delete  Delete a secret from a repository
-  bulk    Update or delete multiple secrets from multiple repositories
+  repo  Manage repository secrets
+  org   Manage organization secrets
+  bulk  Manage multiple secrets in multiple repositories
 
 Run secrethub COMMAND --help for command specific help

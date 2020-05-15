@@ -11,8 +11,15 @@ module SecretHub
     end
 
     # GET /repos/:owner/:repo/actions/secrets/public-key
-    def public_key(repo)
-      public_keys[repo] ||= get("/repos/#{repo}/actions/secrets/public-key")
+    # GET /orgs/:org/actions/secrets/public-key
+    def public_key(repo_or_org)
+      if repo_or_org.include? '/'
+        repo = repo_or_org
+        public_keys[repo_or_org] ||= get("/repos/#{repo}/actions/secrets/public-key")
+      else
+        org = repo_or_org
+        public_keys[repo_or_org] ||= get("/orgs/#{org}/actions/secrets/public-key")
+      end
     end
 
     # GET /repos/:owner/:repo/actions/secrets
@@ -21,18 +28,39 @@ module SecretHub
       response['secrets'].map { |s| s['name'] }
     end
 
+    # GET /orgs/:org/actions/secrets
+    def org_secrets(org)
+      response = get "/orgs/#{org}/actions/secrets"
+      response['secrets'].map { |s| s['name'] }
+    end
+
     # PUT /repos/:owner/:repo/actions/secrets/:name
     def put_secret(repo, name, value)
-      secret = encrypt_for_repo repo, value
+      secret = encrypt_for repo, value
       key_id = public_key(repo)['key_id']
       put "/repos/#{repo}/actions/secrets/#{name}",
         encrypted_value: secret, 
         key_id: key_id
     end
 
+    # PUT /orgs/:org/actions/secrets/:secret_name
+    def put_org_secret(org, name, value)
+      secret = encrypt_for org, value
+      key_id = public_key(org)['key_id']
+      put "/orgs/#{org}/actions/secrets/#{name}",
+        encrypted_value: secret, 
+        key_id: key_id,
+        visibility: 'private'
+    end
+
     # DELETE /repos/:owner/:repo/actions/secrets/:name
     def delete_secret(repo, name)
       delete "/repos/#{repo}/actions/secrets/#{name}"
+    end
+
+    # DELETE /orgs/:org/actions/secrets/:secret_name
+    def delete_org_secret(org, name)
+      delete "/orgs/#{org}/actions/secrets/#{name}"
     end
 
   private
@@ -41,8 +69,8 @@ module SecretHub
       @public_keys ||= {}
     end
 
-    def encrypt_for_repo(repo, secret)
-      public_key = public_key(repo)['key']
+    def encrypt_for(repo_or_org, secret)
+      public_key = public_key(repo_or_org)['key']
       encrypt secret, public_key
     end
 
