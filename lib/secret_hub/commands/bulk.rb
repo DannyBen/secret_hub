@@ -6,7 +6,7 @@ module SecretHub
     class Bulk < Base
       using StringObfuscation
 
-      summary "Update or delete multiple secrets from multiple repositories"
+      summary "Manage multiple secrets in multiple repositories"
       
       usage "secrethub bulk init [CONFIG]"
       usage "secrethub bulk show [CONFIG --visible]"

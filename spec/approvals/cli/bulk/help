@@ -1,4 +1,4 @@
-Update or delete multiple secrets from multiple repositories
+Manage multiple secrets in multiple repositories
 
 Usage:
   secrethub bulk init [CONFIG]

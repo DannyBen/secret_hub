@@ -1,0 +1,37 @@
+Manage organization secrets
+
+Usage:
+  secrethub org list ORG
+  secrethub org save ORG KEY VALUE
+  secrethub org delete ORG KEY
+  secrethub org (-h|--help)
+
+Commands:
+  list
+    Show all organization secrets
+
+  save
+    Create or update an organization secret (with private repositories
+    visibility)
+
+  delete
+    Delete an organization secret
+
+Options:
+  -h --help
+    Show this help
+
+Parameters:
+  ORG
+    Name of the organization
+
+  KEY
+    The name of the secret
+
+  VALUE
+    The plain text secret value
+
+Examples:
+  secrethub org list myorg
+  secrethub org save myorg PASSWORD s3cr3t
+  secrethub org delete myorg PASSWORD

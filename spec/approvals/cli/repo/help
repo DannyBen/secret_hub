@@ -1,0 +1,36 @@
+Manage repository secrets
+
+Usage:
+  secrethub repo list REPO
+  secrethub repo save REPO KEY VALUE
+  secrethub repo delete REPO KEY
+  secrethub repo (-h|--help)
+
+Commands:
+  list
+    Show all repository secrets
+
+  save
+    Create or update a repository secret
+
+  delete
+    Delete a repository secret
+
+Options:
+  -h --help
+    Show this help
+
+Parameters:
+  REPO
+    Full name of the GitHub repository (user/repo)
+
+  KEY
+    The name of the secret
+
+  VALUE
+    The plain text secret value
+
+Examples:
+  secrethub repo list me/myrepo
+  secrethub repo save me/myrepo PASSWORD s3cr3t
+  secrethub repo delete me/myrepo PASSWORD

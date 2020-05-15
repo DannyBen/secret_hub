@@ -1,3 +1,0 @@
-Usage:
-  secrethub delete REPO KEY
-  secrethub delete (-h|--help)
