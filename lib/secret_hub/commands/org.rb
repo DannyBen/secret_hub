@@ -4,7 +4,7 @@ module SecretHub
       summary "Manage organization secrets"
       
       usage "secrethub org list ORG"
-      usage "secrethub org save ORG KEY VALUE"
+      usage "secrethub org save ORG KEY [VALUE]"
       usage "secrethub org delete ORG KEY"
       usage "secrethub org (-h|--help)"
 
@@ -14,9 +14,10 @@ module SecretHub
 
       param "ORG", "Name of the organization"
       param "KEY", "The name of the secret"
-      param "VALUE", "The plain text secret value"
+      param "VALUE", "The plain text secret value. If not provided, it is expected to be set as an environment variable"
 
       example "secrethub org list myorg"
+      example "secrethub org save myorg PASSWORD"
       example "secrethub org save myorg PASSWORD s3cr3t"
       example "secrethub org delete myorg PASSWORD"
 
@@ -48,7 +49,12 @@ module SecretHub
       end
 
       def value
-        args['VALUE']
+        result = args['VALUE'] || ENV[key]
+        if result
+          result
+        else
+          raise InvalidInput, "Please provide a value, either in the command line or in the environment variable '#{key}'"
+        end
       end
 
     end

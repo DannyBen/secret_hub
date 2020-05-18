@@ -4,7 +4,7 @@ module SecretHub
       summary "Manage repository secrets"
       
       usage "secrethub repo list REPO"
-      usage "secrethub repo save REPO KEY VALUE"
+      usage "secrethub repo save REPO KEY [VALUE]"
       usage "secrethub repo delete REPO KEY"
       usage "secrethub repo (-h|--help)"
 
@@ -14,9 +14,10 @@ module SecretHub
 
       param "REPO", "Full name of the GitHub repository (user/repo)"
       param "KEY", "The name of the secret"
-      param "VALUE", "The plain text secret value"
+      param "VALUE", "The plain text secret value. If not provided, it is expected to be set as an environment variable"
 
       example "secrethub repo list me/myrepo"
+      example "secrethub repo save me/myrepo PASSWORD"
       example "secrethub repo save me/myrepo PASSWORD s3cr3t"
       example "secrethub repo delete me/myrepo PASSWORD"
 
@@ -48,9 +49,13 @@ module SecretHub
       end
 
       def value
-        args['VALUE']
+        result = args['VALUE'] || ENV[key]
+        if result
+          result
+        else
+          raise InvalidInput, "Please provide a value, either in the command line or in the environment variable '#{key}'"
+        end
       end
-
     end
   end
 end

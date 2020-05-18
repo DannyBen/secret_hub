@@ -1,5 +1,5 @@
 Usage:
   secrethub repo list REPO
-  secrethub repo save REPO KEY VALUE
+  secrethub repo save REPO KEY [VALUE]
   secrethub repo delete REPO KEY
   secrethub repo (-h|--help)

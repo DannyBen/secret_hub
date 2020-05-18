@@ -61,7 +61,7 @@ Run secrethub COMMAND --help for command specific help
 $ secrethub repo
 Usage:
   secrethub repo list REPO
-  secrethub repo save REPO KEY VALUE
+  secrethub repo save REPO KEY [VALUE]
   secrethub repo delete REPO KEY
   secrethub repo (-h|--help)
 
@@ -69,7 +69,7 @@ Usage:
 $ secrethub org
 Usage:
   secrethub org list ORG
-  secrethub org save ORG KEY VALUE
+  secrethub org save ORG KEY [VALUE]
   secrethub org delete ORG KEY
   secrethub org (-h|--help)
 

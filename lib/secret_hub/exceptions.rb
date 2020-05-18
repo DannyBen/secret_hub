@@ -1,6 +1,7 @@
 module SecretHub
   SecretHubError = Class.new StandardError
   ConfigurationError = Class.new SecretHubError
+  InvalidInput = Class.new SecretHubError
   
   class APIError < SecretHubError
     attr_reader :response

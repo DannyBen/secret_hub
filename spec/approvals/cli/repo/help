@@ -2,7 +2,7 @@ Manage repository secrets
 
 Usage:
   secrethub repo list REPO
-  secrethub repo save REPO KEY VALUE
+  secrethub repo save REPO KEY [VALUE]
   secrethub repo delete REPO KEY
   secrethub repo (-h|--help)
 
@@ -28,9 +28,11 @@ Parameters:
     The name of the secret
 
   VALUE
-    The plain text secret value
+    The plain text secret value. If not provided, it is expected to be set as an
+    environment variable
 
 Examples:
   secrethub repo list me/myrepo
+  secrethub repo save me/myrepo PASSWORD
   secrethub repo save me/myrepo PASSWORD s3cr3t
   secrethub repo delete me/myrepo PASSWORD

@@ -1,5 +1,5 @@
 Usage:
   secrethub org list ORG
-  secrethub org save ORG KEY VALUE
+  secrethub org save ORG KEY [VALUE]
   secrethub org delete ORG KEY
   secrethub org (-h|--help)
