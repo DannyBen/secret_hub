@@ -15,19 +15,36 @@ describe 'bin/secrethub org' do
     end
   end
 
-  describe "list" do
+  describe "list ORG" do
     it "shows list of secrets" do
       expect { subject.run %w[org list matz] }.to output_fixture('cli/org/list/ok')
     end
   end
 
-  describe "save" do
+  describe "save ORG KEY VALUE" do
     it "saves the secret" do
       expect { subject.run %w[org save matz PASSWORD p4ssw0rd] }.to output_fixture('cli/org/save/ok')
     end
   end
 
-  describe "delete" do
+  describe "save ORG KEY" do
+    context "when the value exists in the environemnt" do
+      before { ENV['PASSWORD'] = 's3cr3tz' }
+      after { ENV['PASSWORD'] = nil }
+      
+      it "saves the secret" do
+        expect { subject.run %w[org save matz PASSWORD] }.to output_fixture('cli/org/save/ok')
+      end
+    end
+
+    context "when the value does not exist in the environemnt" do
+      it "raises InvalidInput" do
+        expect { subject.run %w[org save matz PASSWORD] }.to raise_error(InvalidInput)
+      end
+    end
+  end
+
+  describe "delete ORG KEY" do
     it "deletes the secret" do
       expect { subject.run %w[org delete matz PASSWORD] }.to output_fixture('cli/org/delete/ok')
     end

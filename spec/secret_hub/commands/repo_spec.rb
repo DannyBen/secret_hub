@@ -15,19 +15,36 @@ describe 'bin/secrethub repo' do
     end
   end
 
-  describe "list" do
+  describe "list REPO" do
     it "shows list of secrets" do
       expect { subject.run %w[repo list matz/ruby] }.to output_fixture('cli/repo/list/ok')
     end
   end
 
-  describe "save" do
+  describe "save REPO KEY" do
+    context "when the value exists in the environemnt" do
+      before { ENV['PASSWORD'] = 's3cr3tz' }
+      after { ENV['PASSWORD'] = nil }
+      
+      it "saves the secret" do
+        expect { subject.run %w[repo save matz/ruby PASSWORD] }.to output_fixture('cli/repo/save/ok')
+      end
+    end
+
+    context "when the value does not exist in the environemnt" do
+      it "raises InvalidInput" do
+        expect { subject.run %w[repo save matz/ruby PASSWORD] }.to raise_error(InvalidInput)
+      end
+    end
+  end
+
+  describe "save REPO KEY VALUE" do
     it "saves the secret" do
       expect { subject.run %w[repo save matz/ruby PASSWORD p4ssw0rd] }.to output_fixture('cli/repo/save/ok')
     end
   end
 
-  describe "delete" do
+  describe "delete REPO KEY" do
     it "deletes the secret" do
       expect { subject.run %w[repo delete matz/ruby PASSWORD] }.to output_fixture('cli/repo/delete/ok')
     end
