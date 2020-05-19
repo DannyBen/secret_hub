@@ -5,7 +5,7 @@ group :development, :test do
   gem 'lp'
   gem 'pretty_trace'
   gem 'rspec'
-  gem 'rspec_fixtures'
+  gem 'rspec_approvals'
   gem 'runfile', require: false
   gem 'runfile-tasks', require: false
   gem 'simplecov'

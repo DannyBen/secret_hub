@@ -40,6 +40,5 @@ ENV['LINES'] = '30'
 
 # Configure rspec
 RSpec.configure do |c|
-  c.fixtures_path = 'spec/approvals'
   c.include SpecMixin
 end
