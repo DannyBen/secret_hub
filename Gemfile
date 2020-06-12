@@ -9,6 +9,7 @@ group :development, :test do
   gem 'runfile', require: false
   gem 'runfile-tasks', require: false
   gem 'simplecov'
+  gem 'changelog_generator'
 
   # we are locking sinatra to 2.0.3 due to this issue:
   # https://github.com/sinatra/sinatra/issues/1476

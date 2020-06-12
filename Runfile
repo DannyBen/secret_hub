@@ -8,6 +8,7 @@ version SecretHub::VERSION
 
 RunfileTasks::RubyGems.all 'secret_hub'
 RunfileTasks::Testing.rspec
+RunfileTasks::Changelog.generator 'DannyBen/secret_hub'
 
 help   "Run interactive console"
 action :console, :c do
