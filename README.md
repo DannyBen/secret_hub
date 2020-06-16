@@ -3,6 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/secret_hub.svg)](https://badge.fury.io/rb/secret_hub)
 [![Build Status](https://github.com/DannyBen/secret_hub/workflows/Test/badge.svg)](https://github.com/DannyBen/secret_hub/actions?query=workflow%3ATest)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9ac95755c33e105ed998/maintainability)](https://codeclimate.com/github/DannyBen/secret_hub/maintainability)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FDannyBen%2Fsecret_hub.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FDannyBen%2Fsecret_hub?ref=badge_shield)
 
 ---
 
@@ -157,3 +158,7 @@ to contribute, feel free to [open an issue][issues].
 [secrets-api]: https://developer.github.com/v3/actions/secrets/
 [access-key]: https://github.com/settings/tokens
 [issues]: https://github.com/DannyBen/secret_hub/issues
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FDannyBen%2Fsecret_hub.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FDannyBen%2Fsecret_hub?ref=badge_large)
