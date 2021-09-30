@@ -24,7 +24,7 @@ jobs:
 
     - name: Start mock server
       run: |
-        bundle exec run mockserver --daemon
+        nohup bundle exec run mockserver &
         sleep 2
 
     - name: Run tests
