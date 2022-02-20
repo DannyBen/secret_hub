@@ -6,6 +6,8 @@ module SecretHub
 
     def self.load(config_file)
       raise ConfigurationError, "Config file not found #{config_file}" unless File.exist? config_file
+      new YAML.load_file config_file, aliases: true
+    rescue ArgumentError
       new YAML.load_file config_file
     end
 
