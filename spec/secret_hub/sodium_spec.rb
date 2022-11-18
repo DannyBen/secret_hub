@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Sodium do
   subject { Class.new { include Sodium }.new }
-  let(:secret) { "there is no spoon" }
+  let(:secret) { 'there is no spoon' }
 
   describe '#encrypt' do
     before do
@@ -14,7 +14,7 @@ describe Sodium do
       @base64_encoded_public_key = Base64.encode64 @public_key
     end
 
-    it "returns an encrypted and base64-encoded string" do
+    it 'returns an encrypted and base64-encoded string' do
       # Encrypt, using the method under test
       babse64_encrypted = subject.encrypt secret, @base64_encoded_public_key
 
@@ -25,7 +25,7 @@ describe Sodium do
       # Decrypt it using our matching private key
       box = RbNaCl::Boxes::Sealed.from_private_key @private_key
       plain = box.decrypt encrypted
-      
+
       # Compare it to the original plain secret. Boom.
       expect(plain).to eq secret
     end

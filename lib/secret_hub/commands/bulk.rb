@@ -6,38 +6,39 @@ module SecretHub
     class Bulk < Base
       using StringObfuscation
 
-      summary "Manage multiple secrets in multiple repositories"
-      
-      usage "secrethub bulk init [CONFIG]"
-      usage "secrethub bulk show [CONFIG --visible]"
-      usage "secrethub bulk list [CONFIG]"
-      usage "secrethub bulk save [CONFIG --clean --dry --only REPO]"
-      usage "secrethub bulk clean [CONFIG --dry]"
-      usage "secrethub bulk (-h|--help)"
+      summary 'Manage multiple secrets in multiple repositories'
 
-      command "init", "Create a sample configuration file in the current directory"
-      command "show", "Show the configuration file"
-      command "save", "Save multiple secrets to multiple repositories"
-      command "clean", "Delete secrets from multiple repositories unless they are specified in the config file"
-      command "list", "Show all secrets in all repositories"
+      usage 'secrethub bulk init [CONFIG]'
+      usage 'secrethub bulk show [CONFIG --visible]'
+      usage 'secrethub bulk list [CONFIG]'
+      usage 'secrethub bulk save [CONFIG --clean --dry --only REPO]'
+      usage 'secrethub bulk clean [CONFIG --dry]'
+      usage 'secrethub bulk (-h|--help)'
 
-      option "-c, --clean", "Also delete any other secret not defined in the configuration file"
-      option "-v, --visible", "Also show secret values"
-      option "-d, --dry", "Dry run"
-      option "-o, --only REPO", "Save all secrets to a single repository from the configuration file"
+      command 'init', 'Create a sample configuration file in the current directory'
+      command 'show', 'Show the configuration file'
+      command 'save', 'Save multiple secrets to multiple repositories'
+      command 'clean', 'Delete secrets from multiple repositories unless they are specified in the config file'
+      command 'list', 'Show all secrets in all repositories'
 
-      param "CONFIG", "Path to the configuration file [default: secrethub.yml]"
-            
-      example "secrethub bulk init"
-      example "secrethub bulk show --visible"
-      example "secrethub bulk clean"
-      example "secrethub bulk list mysecrets.yml"
-      example "secrethub bulk save mysecrets.yml --dry"
-      example "secrethub bulk save --clean"
-      example "secrethub bulk save --only me/my-important-repo"
+      option '-c, --clean', 'Also delete any other secret not defined in the configuration file'
+      option '-v, --visible', 'Also show secret values'
+      option '-d, --dry', 'Dry run'
+      option '-o, --only REPO', 'Save all secrets to a single repository from the configuration file'
+
+      param 'CONFIG', 'Path to the configuration file [default: secrethub.yml]'
+
+      example 'secrethub bulk init'
+      example 'secrethub bulk show --visible'
+      example 'secrethub bulk clean'
+      example 'secrethub bulk list mysecrets.yml'
+      example 'secrethub bulk save mysecrets.yml --dry'
+      example 'secrethub bulk save --clean'
+      example 'secrethub bulk save --only me/my-important-repo'
 
       def init_command
         raise SecretHubError, "File #{config_file} already exists" if File.exist? config_file
+
         FileUtils.cp config_template, config_file
         say "!txtgrn!Saved #{config_file}"
       end
@@ -66,15 +67,16 @@ module SecretHub
         skipped = 0
 
         config.each do |repo, secrets|
-          next if only and repo != only
+          next if only && (repo != only)
+
           say "!txtblu!#{repo}"
           skipped += update_repo repo, secrets, dry
           clean_repo repo, secrets.keys, dry if args['--clean']
         end
 
-        puts "\n" if skipped > 0 or dry
-        say "Skipped #{skipped} missing secrets" if skipped > 0
-        say "Dry run, nothing happened" if dry
+        puts "\n" if skipped.positive? || dry
+        say "Skipped #{skipped} missing secrets" if skipped.positive?
+        say 'Dry run, nothing happened' if dry
       end
 
       def clean_command
@@ -97,7 +99,7 @@ module SecretHub
         delete_candidates.each do |key|
           say "delete  !txtpur!#{key}  "
           github.delete_secret repo, key unless dry
-          say "!txtgrn!OK"
+          say '!txtgrn!OK'
         end
       end
 
@@ -108,9 +110,9 @@ module SecretHub
           say "save    !txtpur!#{key}  "
           if value
             github.put_secret repo, key, value unless dry
-            say "!txtgrn!OK"
+            say '!txtgrn!OK'
           else
-            say "!txtred!MISSING"
+            say '!txtred!MISSING'
             skipped += 1
           end
         end
