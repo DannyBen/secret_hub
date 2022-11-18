@@ -10,7 +10,6 @@ module SecretHub
       def github
         @github ||= GitHubClient.new
       end
-
     end
   end
 end

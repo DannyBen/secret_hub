@@ -39,8 +39,8 @@ module SecretHub
       secret = encrypt_for repo, value
       key_id = public_key(repo)['key_id']
       put "/repos/#{repo}/actions/secrets/#{name}",
-        encrypted_value: secret, 
-        key_id: key_id
+        encrypted_value: secret,
+        key_id:          key_id
     end
 
     # PUT /orgs/:org/actions/secrets/:secret_name
@@ -48,9 +48,9 @@ module SecretHub
       secret = encrypt_for org, value
       key_id = public_key(org)['key_id']
       put "/orgs/#{org}/actions/secrets/#{name}",
-        encrypted_value: secret, 
-        key_id: key_id,
-        visibility: 'private'
+        encrypted_value: secret,
+        key_id:          key_id,
+        visibility:      'private'
     end
 
     # DELETE /repos/:owner/:repo/actions/secrets/:name
@@ -97,15 +97,14 @@ module SecretHub
     end
 
     def headers
-      { 
-        "Authorization" => "token #{secret_token}",
-        "User-Agent" =>    "SecretHub Gem"
+      {
+        'Authorization' => "token #{secret_token}",
+        'User-Agent'    => 'SecretHub Gem',
       }
     end
 
     def secret_token
-      ENV['GITHUB_ACCESS_TOKEN'] || raise(ConfigurationError, "Please set GITHUB_ACCESS_TOKEN")
+      ENV['GITHUB_ACCESS_TOKEN'] || raise(ConfigurationError, 'Please set GITHUB_ACCESS_TOKEN')
     end
-
   end
 end

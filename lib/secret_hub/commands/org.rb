@@ -1,25 +1,25 @@
 module SecretHub
   module Commands
     class Org < Base
-      summary "Manage organization secrets"
-      
-      usage "secrethub org list ORG"
-      usage "secrethub org save ORG KEY [VALUE]"
-      usage "secrethub org delete ORG KEY"
-      usage "secrethub org (-h|--help)"
+      summary 'Manage organization secrets'
 
-      command "list", "Show all organization secrets"
-      command "save", "Create or update an organization secret (with private repositories visibility)"
-      command "delete", "Delete an organization secret"
+      usage 'secrethub org list ORG'
+      usage 'secrethub org save ORG KEY [VALUE]'
+      usage 'secrethub org delete ORG KEY'
+      usage 'secrethub org (-h|--help)'
 
-      param "ORG", "Name of the organization"
-      param "KEY", "The name of the secret"
-      param "VALUE", "The plain text secret value. If not provided, it is expected to be set as an environment variable"
+      command 'list', 'Show all organization secrets'
+      command 'save', 'Create or update an organization secret (with private repositories visibility)'
+      command 'delete', 'Delete an organization secret'
 
-      example "secrethub org list myorg"
-      example "secrethub org save myorg PASSWORD"
-      example "secrethub org save myorg PASSWORD s3cr3t"
-      example "secrethub org delete myorg PASSWORD"
+      param 'ORG', 'Name of the organization'
+      param 'KEY', 'The name of the secret'
+      param 'VALUE', 'The plain text secret value. If not provided, it is expected to be set as an environment variable'
+
+      example 'secrethub org list myorg'
+      example 'secrethub org save myorg PASSWORD'
+      example 'secrethub org save myorg PASSWORD s3cr3t'
+      example 'secrethub org delete myorg PASSWORD'
 
       def list_command
         say "!txtblu!#{org}:"
@@ -28,7 +28,7 @@ module SecretHub
         end
       end
 
-      def save_command       
+      def save_command
         github.put_org_secret org, key, value
         say "Saved !txtblu!#{org} !txtpur!#{key}"
       end
@@ -50,13 +50,13 @@ module SecretHub
 
       def value
         result = args['VALUE'] || ENV[key]
-        if result
-          result
-        else
-          raise InvalidInput, "Please provide a value, either in the command line or in the environment variable '#{key}'"
+        unless result
+          raise InvalidInput,
+            "Please provide a value, either in the command line or in the environment variable '#{key}'"
         end
-      end
 
+        result
+      end
     end
   end
 end

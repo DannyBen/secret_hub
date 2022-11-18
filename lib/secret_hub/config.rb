@@ -6,6 +6,7 @@ module SecretHub
 
     def self.load(config_file)
       raise ConfigurationError, "Config file not found #{config_file}" unless File.exist? config_file
+
       new YAML.load_file config_file, aliases: true
     rescue ArgumentError
       new YAML.load_file config_file
@@ -20,11 +21,11 @@ module SecretHub
     end
 
     def each(&block)
-      to_h.each &block
+      to_h.each(&block)
     end
 
     def each_repo(&block)
-      to_h.keys.each &block
+      to_h.keys.each(&block)
     end
 
   private
@@ -33,18 +34,20 @@ module SecretHub
       result = {}
       data.each do |repo, secrets|
         next unless repo.include? '/'
+
         result[repo] = resolve_secrets secrets
       end
       result
     end
 
     def resolve_secrets(secrets)
-      secrets = [] unless secrets
-      
-      if secrets.is_a? Hash
-        secrets.map { |key, value| [key, value || ENV[key]] }.to_h
-      elsif secrets.is_a? Array
-        secrets.map { |key| [key, ENV[key]] }.to_h
+      secrets ||= []
+
+      case secrets
+      when Hash
+        secrets.to_h { |key, value| [key, value || ENV[key]] }
+      when Array
+        secrets.to_h { |key| [key, ENV[key]] }
       end
     end
   end
