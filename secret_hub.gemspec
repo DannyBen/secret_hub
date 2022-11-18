@@ -21,5 +21,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'mister_bin', '~> 0.7'
   s.add_runtime_dependency 'rbnacl', '~> 7.1'
   s.add_runtime_dependency 'string-obfuscator', '~> 0.1'
+  
   s.metadata['rubygems_mfa_required'] = 'true'
 end
