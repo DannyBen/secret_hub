@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe StringObfuscation do
-  using StringObfuscation
+  using described_class
 
   describe '#obfuscate' do
     it 'obfuscates a string' do

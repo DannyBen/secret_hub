@@ -11,7 +11,7 @@ describe GitHubClient do
         .to eq({ 'key' => fake_public_key, 'key_id' => 'some-key-id' })
     end
 
-    context 'on error' do
+    context 'when an error occurs' do
       it 'raises APIError' do
         expect { subject.public_key non_repo }.to raise_error(APIError)
       end
@@ -23,7 +23,7 @@ describe GitHubClient do
       expect(subject.secrets repo).to eq(%w[PASSWORD SECRET])
     end
 
-    context 'on error' do
+    context 'when an error occurs' do
       it 'raises APIError' do
         expect { subject.secrets non_repo }.to raise_error(APIError)
       end
@@ -32,10 +32,10 @@ describe GitHubClient do
 
   describe '#put_secret' do
     it 'creates or updates a secret' do
-      expect(subject.put_secret repo, 'SECRET', secret).to eq true
+      expect(subject.put_secret repo, 'SECRET', secret).to be true
     end
 
-    context 'on error' do
+    context 'when an error occurs' do
       it 'raises APIError' do
         expect { subject.put_secret non_repo, 'SECRET', secret }.to raise_error(APIError)
       end
@@ -44,10 +44,10 @@ describe GitHubClient do
 
   describe '#delete_secret' do
     it 'deletes a secret' do
-      expect(subject.delete_secret repo, 'SECRET').to eq true
+      expect(subject.delete_secret repo, 'SECRET').to be true
     end
 
-    context 'on error' do
+    context 'when an error occurs' do
       it 'raises APIError' do
         expect { subject.delete_secret non_repo, 'SECRET' }.to raise_error(APIError)
       end

@@ -7,8 +7,8 @@ describe 'bin/secret_hub' do
     expect { subject.run }.to output_approval('cli/commands')
   end
 
-  context 'on exception' do
-    it 'errors gracefuly' do
+  context 'when an exception occurs' do
+    it 'errors gracefully' do
       expect(`bin/secrethub repo list guido/python 2>&1`).to match_approval('cli/exception')
     end
   end

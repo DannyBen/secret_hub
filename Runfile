@@ -1,6 +1,7 @@
 require "runfile-tasks"
 require "byebug"
 require_relative 'lib/secret_hub'
+require_relative 'lib/secret_hub/version'
 
 title   "SecretHub Developer Toolbelt"
 summary "Runfile tasks for building the SecretHub gem"

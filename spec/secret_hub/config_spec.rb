@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 describe Config do
-  let(:config_file) { 'spec/fixtures/secrets.yml' }
   subject { described_class.load config_file }
+
+  let(:config_file) { 'spec/fixtures/secrets.yml' }
 
   describe '::load' do
     it 'loads config from file' do

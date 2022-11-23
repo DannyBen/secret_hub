@@ -9,7 +9,9 @@ module SecretHub
 
       new YAML.load_file config_file, aliases: true
     rescue ArgumentError
+      # :nocov:
       new YAML.load_file config_file
+      # :nocov:
     end
 
     def initialize(data)

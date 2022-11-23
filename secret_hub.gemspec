@@ -18,9 +18,9 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'colsole', '~> 0.7'
   s.add_runtime_dependency 'httparty', '~> 0.17'
   s.add_runtime_dependency 'lp', '~> 0.2'
-  s.add_runtime_dependency 'mister_bin', '~> 0.7'
+  s.add_runtime_dependency 'mister_bin', '~> 0.7.3'
   s.add_runtime_dependency 'rbnacl', '~> 7.1'
   s.add_runtime_dependency 'string-obfuscator', '~> 0.1'
-  
+
   s.metadata['rubygems_mfa_required'] = 'true'
 end
