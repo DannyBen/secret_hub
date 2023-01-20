@@ -9,7 +9,7 @@ module SecretHub
     def self.router
       router = MisterBin::Runner.new version: VERSION,
         header: 'GitHub Secret Manager',
-        footer: 'Run !txtpur!secrethub COMMAND --help!txtrst! for command specific help'
+        footer: 'Run m`secrethub COMMAND --help` for command specific help'
 
       router.route 'repo',   to: Commands::Repo
       router.route 'org',    to: Commands::Org

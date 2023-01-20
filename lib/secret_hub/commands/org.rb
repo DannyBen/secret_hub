@@ -22,20 +22,20 @@ module SecretHub
       example 'secrethub org delete myorg PASSWORD'
 
       def list_command
-        say "!txtblu!#{org}:"
+        say "b`#{org}`:"
         github.org_secrets(org).each do |secret|
-          say "- !txtpur!#{secret}"
+          say "- m`#{secret}`"
         end
       end
 
       def save_command
         github.put_org_secret org, key, value
-        say "Saved !txtblu!#{org} !txtpur!#{key}"
+        say "Saved b`#{org}` m`#{key}`"
       end
 
       def delete_command
         github.delete_org_secret org, key
-        say "Deleted !txtblu!#{org} !txtpur!#{key}"
+        say "Deleted b`#{org}` m`#{key}`"
       end
 
     private
