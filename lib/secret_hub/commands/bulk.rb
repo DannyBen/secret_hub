@@ -40,12 +40,12 @@ module SecretHub
         raise SecretHubError, "File #{config_file} already exists" if File.exist? config_file
 
         FileUtils.cp config_template, config_file
-        say "!txtgrn!Saved #{config_file}"
+        say "Saved g`#{config_file}`"
       end
 
       def show_command
         config.each do |repo, secrets|
-          say "!txtblu!#{repo}:"
+          say "b`#{repo}`:"
           secrets.each do |key, value|
             show_secret key, value, args['--visible']
           end
@@ -54,9 +54,9 @@ module SecretHub
 
       def list_command
         config.each_repo do |repo|
-          say "!txtblu!#{repo}:"
+          say "b`#{repo}`:"
           github.secrets(repo).each do |secret|
-            say "- !txtpur!#{secret}"
+            say "- m`#{secret}`"
           end
         end
       end
@@ -69,7 +69,7 @@ module SecretHub
         config.each do |repo, secrets|
           next if only && (repo != only)
 
-          say "!txtblu!#{repo}"
+          say "b`#{repo}`"
           skipped += update_repo repo, secrets, dry
           clean_repo repo, secrets.keys, dry if args['--clean']
         end
@@ -83,7 +83,7 @@ module SecretHub
         dry = args['--dry']
 
         config.each do |repo, secrets|
-          say "!txtblu!#{repo}"
+          say "b`#{repo}`"
           clean_repo repo, secrets.keys, dry
         end
 
@@ -97,9 +97,9 @@ module SecretHub
         delete_candidates = repo_keys - keys
 
         delete_candidates.each do |key|
-          say "delete  !txtpur!#{key}  "
+          say "delete  m`#{key}`  "
           github.delete_secret repo, key unless dry
-          say '!txtgrn!OK'
+          say 'g`OK`'
         end
       end
 
@@ -107,12 +107,12 @@ module SecretHub
         skipped = 0
 
         secrets.each do |key, value|
-          say "save    !txtpur!#{key}  "
+          say "save    m`#{key}`  "
           if value
             github.put_secret repo, key, value unless dry
-            say '!txtgrn!OK'
+            say 'g`OK`'
           else
-            say '!txtred!MISSING'
+            say 'r`MISSING`'
             skipped += 1
           end
         end
@@ -123,9 +123,9 @@ module SecretHub
       def show_secret(key, value, visible)
         if value
           value = value.obfuscate unless visible
-          say "  !txtpur!#{key}: !txtcyn!#{value}"
+          say "  m`#{key}`: c`#{value}`"
         else
-          say "  !txtpur!#{key}: !txtred!*MISSING*"
+          say "  m`#{key}`: r`*MISSING*`"
         end
       end
 
