@@ -1,25 +1,18 @@
-require "runfile-tasks"
 require "byebug"
-require_relative 'lib/secret_hub'
-require_relative 'lib/secret_hub/version'
+require 'secret_hub'
+require 'secret_hub/version'
 
 title   "SecretHub Developer Toolbelt"
 summary "Runfile tasks for building the SecretHub gem"
 version SecretHub::VERSION
 
-RunfileTasks::RubyGems.all 'secret_hub'
-RunfileTasks::Testing.rspec
-
-help   "Run interactive console"
-action :console, :c do
-  system "bundle exec bin/console"
-end
+import_gem 'runfile-tasks/gem'
+import 'debug'
 
 help   "Run test mock server"
 usage  "mockserver"
 action :mockserver do |args|
   ENV['SINATRA_ACTIVESUPPORT_WARNING'] = 'false'
-  exec "ruby spec/mock_api/server.rb"
+  exec "bundle exec ruby spec/mock_api/server.rb"
 end
 
-require './debug' if File.exist? 'debug.rb'

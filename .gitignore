@@ -4,4 +4,5 @@
 /gems
 /Gemfile.lock
 /secrethub.yml
+/debug.runfile
 *.gem
