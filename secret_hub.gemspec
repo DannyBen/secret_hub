@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.executables = ['secrethub']
   s.homepage    = 'https://github.com/dannyben/secret_hub'
   s.license     = 'MIT'
-  s.required_ruby_version = '>= 2.7'
+  s.required_ruby_version = '>= 3.0'
 
   s.add_runtime_dependency 'colsole', '>= 0.8.1', '< 2'
   s.add_runtime_dependency 'httparty', '~> 0.21'
