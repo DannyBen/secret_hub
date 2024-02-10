@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'byebug'
+require 'debug'
 require 'yaml'
 require_relative '../fake_public_key'
 

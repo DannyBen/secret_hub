@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'byebug'
+gem 'debug'
 gem 'lp'
 gem 'pretty_trace'
 gem 'puma', require: false
