@@ -16,3 +16,8 @@ action :mockserver do |args|
   exec "bundle exec ruby spec/mock_api/server.rb"
 end
 
+help 'Generate changelog and append old changelog'
+action :changelog do
+  system "git changelog --save"
+  system "cat .changelog.old.md >> CHANGELOG.md"
+end
