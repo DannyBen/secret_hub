@@ -1,4 +1,4 @@
-require "byebug"
+require 'debug'
 require 'secret_hub'
 require 'secret_hub/version'
 
