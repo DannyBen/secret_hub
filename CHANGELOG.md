@@ -12,6 +12,7 @@ v0.2.2 - 2024-02-10
 - Updates for Ruby 3.3 and Rack 3
 
 
+<!-- break v0.2.1 -->
 ## [v0.2.1](https://github.com/DannyBen/secret_hub/tree/v0.2.1) (2020-05-18)
 
 [Full Changelog](https://github.com/DannyBen/secret_hub/compare/v0.2.0...v0.2.1)
