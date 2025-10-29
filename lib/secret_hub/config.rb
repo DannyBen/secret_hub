@@ -34,10 +34,21 @@ module SecretHub
 
     def to_h!
       result = {}
-      data.each do |repo, secrets|
+      data.each do |repo, config|
         next unless repo.include? '/'
 
-        result[repo] = resolve_secrets secrets
+        # Handle old format where all items were secrets
+        if config.is_a?(Array) || (config.is_a?(Hash) && !config.key?('secrets') && !config.key?('variables'))
+          result[repo] = resolve_secrets(config)
+          next
+        end
+
+        result[repo] = {}
+        config['secrets'] ||= []
+        config['variables'] ||= []
+
+        result[repo].merge!(resolve_secrets(config['secrets']))
+        result[repo].merge!(resolve_secrets(config['variables']))
       end
       result
     end
@@ -47,7 +58,7 @@ module SecretHub
 
       case secrets
       when Hash
-        secrets.to_h { |key, value| [key, value || ENV[key]] }
+        secrets.to_h { |key, value| [key, (value || ENV[key])&.to_s] }
       when Array
         secrets.to_h { |key| [key, ENV[key]] }
       end

@@ -1,5 +1,6 @@
 require 'httparty'
 require 'secret_hub/sodium'
+require 'json'
 
 module SecretHub
   class GitHubClient
@@ -28,10 +29,28 @@ module SecretHub
       response['secrets'].map { |s| s['name'] }
     end
 
+    # GET /repos/:owner/:repo/actions/variables
+    def variables(repo)
+      response = get "/repos/#{repo}/actions/variables"
+      response.fetch('variables', []).map { |v| v['name'] }
+    rescue APIError => e
+      return [] if e.message.include?('404')
+      raise
+    end
+
     # GET /orgs/:org/actions/secrets
     def org_secrets(org)
       response = get "/orgs/#{org}/actions/secrets"
       response['secrets'].map { |s| s['name'] }
+    end
+
+    # GET /orgs/:org/actions/variables
+    def org_variables(org)
+      response = get "/orgs/#{org}/actions/variables"
+      response.fetch('variables', []).map { |v| v['name'] }
+    rescue APIError => e
+      return [] if e.message.include?('404')
+      raise
     end
 
     # PUT /repos/:owner/:repo/actions/secrets/:name
@@ -41,6 +60,25 @@ module SecretHub
       put "/repos/#{repo}/actions/secrets/#{name}",
         encrypted_value: secret,
         key_id:          key_id
+    end
+
+    # POST /repos/:owner/:repo/actions/variables
+    def put_variable(repo, name, value)
+      post "/repos/#{repo}/actions/variables",
+        name: name,
+        value: value
+    rescue APIError => e
+      if e.message.include?('422')
+        # If variable exists, update it
+        patch "/repos/#{repo}/actions/variables/#{name}",
+          name: name,
+          value: value
+      elsif e.message.include?('409')
+        # 409 means variable already exists - let this bubble up to be handled by caller
+        raise
+      else
+        raise
+      end
     end
 
     # PUT /orgs/:org/actions/secrets/:secret_name
@@ -53,14 +91,32 @@ module SecretHub
         visibility:      'private'
     end
 
+    # PUT /orgs/:org/actions/variables/:name
+    def put_org_variable(org, name, value)
+      put "/orgs/#{org}/actions/variables/#{name}",
+        name: name,
+        value: value,
+        visibility: 'private'
+    end
+
     # DELETE /repos/:owner/:repo/actions/secrets/:name
     def delete_secret(repo, name)
       delete "/repos/#{repo}/actions/secrets/#{name}"
     end
 
+    # DELETE /repos/:owner/:repo/actions/variables/:name
+    def delete_variable(repo, name)
+      delete "/repos/#{repo}/actions/variables/#{name}"
+    end
+
     # DELETE /orgs/:org/actions/secrets/:secret_name
     def delete_org_secret(org, name)
       delete "/orgs/#{org}/actions/secrets/#{name}"
+    end
+
+    # DELETE /orgs/:org/actions/variables/:name
+    def delete_org_variable(org, name)
+      delete "/orgs/#{org}/actions/variables/#{name}"
     end
 
   private
@@ -87,6 +143,20 @@ module SecretHub
       response.success? or raise APIError, response
     end
 
+    def post(url, args = {})
+      options = { body: args.to_json }
+      all_options = request_options.merge options
+      response = self.class.post url, all_options
+      response.success? or raise APIError, response
+    end
+
+    def patch(url, args = {})
+      options = { body: args.to_json }
+      all_options = request_options.merge options
+      response = self.class.patch url, all_options
+      response.success? or raise APIError, response
+    end
+
     def delete(url)
       response = self.class.delete url, request_options
       response.success? or raise APIError, response
@@ -100,6 +170,7 @@ module SecretHub
       {
         'Authorization' => "token #{secret_token}",
         'User-Agent'    => 'SecretHub Gem',
+        'Accept'        => 'application/vnd.github.v3+json'
       }
     end
 

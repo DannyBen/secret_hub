@@ -91,3 +91,81 @@ delete '/orgs/:org/actions/secrets/:name' do
     halt 500, 'some error'
   end
 end
+
+# GET Variables
+get '/repos/:owner/:repo/actions/variables' do
+  if %w[matz user].include? params[:owner]
+    json variables: [{ name: 'API_URL' }, { name: 'ENVIRONMENT' }]
+  else
+    halt 404, 'not found'
+  end
+end
+
+# GET Org Variables
+get '/orgs/:org/actions/variables' do
+  if %w[matz user].include? params[:org]
+    json variables: [{ name: 'API_URL' }, { name: 'ENVIRONMENT' }]
+  else
+    halt 404, 'not found'
+  end
+end
+
+# POST Variable
+post '/repos/:owner/:repo/actions/variables' do
+  if %w[matz user].include? params[:owner]
+    # Return 422 if variable exists to test update path
+    halt 422, 'variable exists'
+  else
+    halt 500, 'some error'
+  end
+end
+
+# PATCH Variable 
+patch '/repos/:owner/:repo/actions/variables/:name' do
+  if %w[matz user].include? params[:owner]
+    status 200
+    ''
+  else
+    halt 500, 'some error'
+  end
+end
+
+# PATCH Variable 
+patch '/repos/:owner/:repo/actions/variables/:name' do
+  if %w[matz user].include? params[:owner]
+    status 200
+    ''
+  else
+    halt 500, 'some error'
+  end
+end
+
+# PUT Org Variable
+put '/orgs/:org/actions/variables/:name' do
+  if %w[matz user].include? params[:org]
+    status 200
+    ''
+  else
+    halt 500, 'some error'
+  end
+end
+
+# DELETE Variable
+delete '/repos/:owner/:repo/actions/variables/:name' do
+  if %w[matz user].include? params[:owner]
+    status 200
+    ''
+  else
+    halt 500, 'some error'
+  end
+end
+
+# DELETE Org Variable
+delete '/orgs/:org/actions/variables/:name' do
+  if %w[matz user].include? params[:org]
+    status 200
+    ''
+  else
+    halt 500, 'some error'
+  end
+end

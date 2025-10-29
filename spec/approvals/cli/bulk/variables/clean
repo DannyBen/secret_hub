@@ -1,0 +1,7 @@
+matz/ruby:
+delete    API_URL    OK
+delete    ENVIRONMENT    OK
+
+user/repo:
+delete    API_URL    OK
+delete    ENVIRONMENT    OK

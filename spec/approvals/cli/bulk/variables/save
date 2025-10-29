@@ -1,0 +1,7 @@
+matz/ruby:
+save    API_URL    OK
+save    ENVIRONMENT    MISSING
+
+user/repo:
+save    API_URL    OK
+save    ENVIRONMENT    OK

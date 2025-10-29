@@ -6,25 +6,28 @@ module SecretHub
     class Bulk < Base
       using StringObfuscation
 
-      summary 'Manage multiple secrets in multiple repositories'
+      summary 'Manage multiple secrets and variables in multiple repositories'
 
       usage 'secrethub bulk init [CONFIG]'
       usage 'secrethub bulk show [CONFIG --visible]'
-      usage 'secrethub bulk list [CONFIG]'
-      usage 'secrethub bulk save [CONFIG --clean --dry --only REPO]'
-      usage 'secrethub bulk clean [CONFIG --dry]'
+      usage 'secrethub bulk list secrets [CONFIG]'
+      usage 'secrethub bulk list variables [CONFIG]'
+      usage 'secrethub bulk save secrets [CONFIG --clean --dry --only REPO]'
+      usage 'secrethub bulk save variables [CONFIG --clean --dry --only REPO]'
+      usage 'secrethub bulk clean secrets [CONFIG --dry]'
+      usage 'secrethub bulk clean variables [CONFIG --dry]'
       usage 'secrethub bulk (-h|--help)'
 
       command 'init', 'Create a sample configuration file in the current directory'
       command 'show', 'Show the configuration file'
-      command 'save', 'Save multiple secrets to multiple repositories'
-      command 'clean', 'Delete secrets from multiple repositories unless they are specified in the config file'
-      command 'list', 'Show all secrets in all repositories'
+      command 'save', 'Save multiple secrets or variables to multiple repositories'
+      command 'clean', 'Delete secrets or variables from multiple repositories unless they are specified in the config file'
+      command 'list', 'Show all secrets or variables in all repositories'
 
-      option '-c, --clean', 'Also delete any other secret not defined in the configuration file'
-      option '-v, --visible', 'Also show secret values'
+      option '-c, --clean', 'Also delete any other secret or variable not defined in the configuration file'
+      option '-v, --visible', 'Also show values'
       option '-d, --dry', 'Dry run'
-      option '-o, --only REPO', 'Save all secrets to a single repository from the configuration file'
+      option '-o, --only REPO', 'Save all secrets or variables to a single repository from the configuration file'
 
       param 'CONFIG', 'Path to the configuration file [default: secrethub.yml]'
 
@@ -55,8 +58,14 @@ module SecretHub
       def list_command
         config.each_repo do |repo|
           say "b`#{repo}`:"
-          github.secrets(repo).each do |secret|
-            say "- m`#{secret}`"
+          items = case type
+                 when 'secrets'
+                   github.secrets(repo)
+                 when 'variables'
+                   github.variables(repo)
+                 end
+          items.each do |item|
+            say "- m`#{item}`"
           end
         end
       end
@@ -66,25 +75,25 @@ module SecretHub
         only = args['--only']
         skipped = 0
 
-        config.each do |repo, secrets|
+        config.each do |repo, items|
           next if only && (repo != only)
 
           say "b`#{repo}`"
-          skipped += update_repo repo, secrets, dry
-          clean_repo repo, secrets.keys, dry if args['--clean']
+          skipped += update_repo repo, items, dry
+          clean_repo repo, items.keys, dry if args['--clean']
         end
 
         puts "\n" if skipped.positive? || dry
-        say "Skipped #{skipped} missing secrets" if skipped.positive?
+        say "Skipped #{skipped} missing #{type}" if skipped.positive?
         say 'Dry run, nothing happened' if dry
       end
 
       def clean_command
         dry = args['--dry']
 
-        config.each do |repo, secrets|
+        config.each do |repo, items|
           say "b`#{repo}`"
-          clean_repo repo, secrets.keys, dry
+          clean_repo repo, items.keys, dry
         end
 
         say "\nDry run, nothing happened" if dry
@@ -93,24 +102,48 @@ module SecretHub
     private
 
       def clean_repo(repo, keys, dry)
-        repo_keys = github.secrets repo
-        delete_candidates = repo_keys - keys
+        repo_items = case type
+                    when 'secrets'
+                      github.secrets(repo)
+                    when 'variables'
+                      github.variables(repo)
+                    end
+        delete_candidates = repo_items - keys
 
         delete_candidates.each do |key|
           say "delete  m`#{key}`  "
-          github.delete_secret repo, key unless dry
+          case type
+          when 'secrets'
+            github.delete_secret(repo, key) unless dry
+          when 'variables'
+            github.delete_variable(repo, key) unless dry
+          end
           say 'g`OK`'
         end
       end
 
-      def update_repo(repo, secrets, dry)
+      def update_repo(repo, items, dry)
         skipped = 0
 
-        secrets.each do |key, value|
+        items.each do |key, value|
           say "save    m`#{key}`  "
           if value
-            github.put_secret repo, key, value unless dry
-            say 'g`OK`'
+            begin
+              case type
+              when 'secrets'
+                github.put_secret(repo, key, value) unless dry
+              when 'variables'
+                github.put_variable(repo, key, value) unless dry
+              end
+              say 'g`OK`'
+            rescue APIError => e
+              if e.message.include?('409') && e.message.include?('Already exists')
+                say 'y`SKIPPED` (already exists)'
+                skipped += 1
+              else
+                raise
+              end
+            end
           else
             say 'r`MISSING`'
             skipped += 1
@@ -127,6 +160,12 @@ module SecretHub
         else
           say "  m`#{key}`: r`*MISSING*`"
         end
+      end
+
+      def type
+        return 'secrets' if args['secrets']
+        return 'variables' if args['variables']
+        raise InvalidInput, "Please specify either 'secrets' or 'variables'"
       end
 
       def config_file

@@ -2,18 +2,32 @@
 # Keys that do not include '/' will be ignored
 # Can be used to set some reusable YAML anchors
 docker: &docker
+  # Secrets (must be encrypted)
   DOCKER_USER:
   DOCKER_PASSWORD:
 
+  # Variables (stored as plain text)
+  DOCKER_REGISTRY: ghcr.io
+  DOCKER_TAG: latest
+
 # Array syntax
-# All secrets must be defined as environment variables
+# All secrets/variables must be defined as environment variables
 user/repo:
-- SECRET
-- PASSWORD
+  secrets:
+    - SECRET
+    - PASSWORD
+  variables:
+    - API_URL
+    - ENVIRONMENT
 
 # Hash syntax
-# Empty secrets will be loaded from environment variables
+# Empty values will be loaded from environment variables
 user/another-repo:
-  <<: *docker
-  SECRET:
-  PASSWORD: p4ssw0rd
+  secrets:
+    <<: *docker
+    SECRET:
+    PASSWORD: p4ssw0rd
+  variables:
+    <<: *docker
+    API_URL: https://api.example.com
+    ENVIRONMENT: production

@@ -1,0 +1,13 @@
+matz/ruby:
+save    API_URL    OK
+save    ENVIRONMENT    MISSING
+delete    PASSWORD    OK
+delete    SECRET    OK
+
+user/repo:
+save    API_URL    OK
+save    ENVIRONMENT    OK
+delete    PASSWORD    OK
+delete    SECRET    OK
+
+Dry run, nothing happened

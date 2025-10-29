@@ -1,7 +1,7 @@
-# SecretHub - GitHub Secrets CLI
+# SecretHub - GitHub Secrets and Variables CLI
 
-SecretHub lets you easily manage your GitHub secrets from the command line
-with support for bulk operations and organization secrets.
+SecretHub lets you easily manage your GitHub Actions secrets and variables from the command line
+with support for bulk operations and organization secrets/variables.
 
 ---
 
@@ -36,35 +36,35 @@ Give your token the `repo` scope, and for organization secrets, the `admin:org` 
 
 SecretHub has three families of commands:
 
-1. `secrethub repo` - manage repository secrets.
-2. `secrethub org` - manage organization secrets.
-3. `secrethub bulk` - manage multiple secrets in multiple repositories using a config file.
+1. `secrethub repo` - manage repository secrets and variables.
+2. `secrethub org` - manage organization secrets and variables.
+3. `secrethub bulk` - manage multiple secrets and variables in multiple repositories using a config file.
 
 ```shell
 $ secrethub
-GitHub Secret Manager
+GitHub Secrets and Variables Manager
 
 Commands:
-  repo  Manage repository secrets
-  org   Manage organization secrets
-  bulk  Manage multiple secrets in multiple repositories
+  repo  Manage repository secrets and variables
+  org   Manage organization secrets and variables
+  bulk  Manage multiple secrets and variables in multiple repositories
 
 Run secrethub COMMAND --help for command specific help
 
 
 $ secrethub repo
 Usage:
-  secrethub repo list REPO
-  secrethub repo save REPO KEY [VALUE]
-  secrethub repo delete REPO KEY
+  secrethub repo list secrets|variables REPO
+  secrethub repo save secrets|variables REPO KEY [VALUE]
+  secrethub repo delete secrets|variables REPO KEY
   secrethub repo (-h|--help)
 
 
 $ secrethub org
 Usage:
-  secrethub org list ORG
-  secrethub org save ORG KEY [VALUE]
-  secrethub org delete ORG KEY
+  secrethub org list secrets|variables ORG
+  secrethub org save secrets|variables ORG KEY [VALUE]
+  secrethub org delete secrets|variables ORG KEY
   secrethub org (-h|--help)
 
 
@@ -72,53 +72,69 @@ $ secrethub bulk
 Usage:
   secrethub bulk init [CONFIG]
   secrethub bulk show [CONFIG --visible]
-  secrethub bulk list [CONFIG]
-  secrethub bulk save [CONFIG --clean --dry --only REPO]
-  secrethub bulk clean [CONFIG --dry]
+  secrethub bulk list secrets|variables [CONFIG]
+  secrethub bulk save secrets|variables [CONFIG --clean --dry --only REPO]
+  secrethub bulk clean secrets|variables [CONFIG --dry]
   secrethub bulk (-h|--help)
 ```
 
 ## Bulk operations
 
 All the bulk operations use a simple YAML configuration file.
-The configuration file includes a list of GitHub repositories, each with a
-list of its secrets.
+The configuration file includes a list of GitHub repositories, each with separate
+sections for secrets and variables.
 
 For example:
 
 ```yaml
 # secrethub.yml
 user/repo:
-- SECRET
-- PASSWORD
-- SECRET_KEY
+  secrets:
+    - SECRET
+    - PASSWORD
+    - SECRET_KEY
+  variables:
+    - API_URL
+    - ENVIRONMENT
 
 user/another-repo:
-- SECRET
-- SECRET_KEY
+  secrets:
+    - SECRET
+    - SECRET_KEY
+  variables:
+    - API_URL
+    - ENVIRONMENT
 ```
 
-Each list of secrets can either be an array, or a hash.
+Both secrets and variables lists can use either array or hash syntax.
 
 ### Using array syntax
 
-All secrets must be defined as environment variables.
+All values must be defined as environment variables.
 
 ```yaml
 user/repo:
-- SECRET
-- PASSWORD
+  secrets:
+    - SECRET
+    - PASSWORD
+  variables:
+    - API_URL
+    - ENVIRONMENT
 ```
 
 ### Using hash syntax
 
-Each secret may define its value, or leave it blank. When a secret value is
-blank, it will be loaded from the environment.
+Each value may be specified directly or left blank. When blank, 
+the value will be loaded from the environment.
 
 ```yaml
 user/another-repo:
-  SECRET:
-  PASSWORD: p4ssw0rd
+  secrets:
+    SECRET:
+    PASSWORD: p4ssw0rd
+  variables:
+    API_URL: https://api.example.com
+    ENVIRONMENT: production
 ```
 
 ### Using YAML anchors
@@ -129,13 +145,23 @@ anchors:
 
 ```yaml
 docker: &docker
+  # Secrets (must be encrypted)
   DOCKER_USER:
   DOCKER_PASSWORD:
 
+  # Variables (stored as plain text)
+  DOCKER_REGISTRY: ghcr.io
+  DOCKER_TAG: latest
+
 user/repo:
-  <<: *docker
-  SECRET:
-  PASSWORD: p4ssw0rd
+  secrets:
+    <<: *docker
+    SECRET:
+    PASSWORD: p4ssw0rd
+  variables:
+    <<: *docker
+    API_URL: https://api.example.com
+    ENVIRONMENT: production
 ```
 
 Note that YAML anchors only work with the hash syntax.

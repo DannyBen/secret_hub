@@ -1,0 +1,6 @@
+matz/ruby:
+- API_URL
+- ENVIRONMENT
+user/repo:
+- API_URL
+- ENVIRONMENT

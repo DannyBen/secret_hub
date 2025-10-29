@@ -1,0 +1,27 @@
+# Test config file with variables
+docker: &docker
+  # Secrets
+  DOCKER_USER:
+  DOCKER_PASSWORD:
+
+  # Variables
+  DOCKER_REGISTRY: ghcr.io
+  DOCKER_TAG: latest
+
+matz/ruby:
+  secrets:
+    - SECRET
+    - PASSWORD
+  variables:
+    - API_URL
+    - ENVIRONMENT
+
+user/repo:
+  secrets:
+    <<: *docker
+    SECRET:
+    PASSWORD: p4ssw0rd
+  variables:
+    <<: *docker
+    API_URL: https://api.example.com
+    ENVIRONMENT: production
