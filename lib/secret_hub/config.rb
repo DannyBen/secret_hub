@@ -22,12 +22,12 @@ module SecretHub
       @to_h ||= to_h!
     end
 
-    def each(&block)
-      to_h.each(&block)
+    def each(&)
+      to_h.each(&)
     end
 
-    def each_repo(&block)
-      to_h.keys.each(&block)
+    def each_repo(&)
+      to_h.keys.each(&)
     end
 
   private
