@@ -1,7 +1,12 @@
 module SecretHub
-  SecretHubError = Class.new StandardError
-  ConfigurationError = Class.new SecretHubError
-  InvalidInput = Class.new SecretHubError
+  class SecretHubError < StandardError
+  end
+
+  class ConfigurationError < SecretHubError
+  end
+
+  class InvalidInput < SecretHubError
+  end
 
   class APIError < SecretHubError
     attr_reader :response
