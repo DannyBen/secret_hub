@@ -13,19 +13,19 @@ Gem::Specification.new do |s|
   s.executables = ['secrethub']
   s.homepage    = 'https://github.com/dannyben/secret_hub'
   s.license     = 'MIT'
-  s.required_ruby_version = '>= 3.0'
+  s.required_ruby_version = '>= 3.2'
 
-  s.add_dependency 'colsole', '>= 0.8.1', '< 2'
+  s.add_dependency 'colsole', '~> 1.0'
   s.add_dependency 'httparty', '~> 0.21'
   s.add_dependency 'lp', '~> 0.2'
-  s.add_dependency 'mister_bin', '~> 0.7.3'
+  s.add_dependency 'mister_bin', '~> 0.9.0'
   s.add_dependency 'rackup', '~> 2.1'
   s.add_dependency 'rbnacl', '~> 7.1'
   s.add_dependency 'string-obfuscator', '~> 0.1'
 
-  # REMOVE ME
-  s.add_dependency 'bigdecimal', '>= 0'  # to address ruby warning by multi_xml
-  s.add_dependency 'csv', '>= 0'         # to address ruby warning by httparty
+  # # REMOVE ME
+  # s.add_dependency 'bigdecimal', '>= 0'  # to address ruby warning by multi_xml
+  # s.add_dependency 'csv', '>= 0'         # to address ruby warning by httparty
 
   s.metadata['rubygems_mfa_required'] = 'true'
 end
