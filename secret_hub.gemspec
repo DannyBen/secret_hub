@@ -23,9 +23,10 @@ Gem::Specification.new do |s|
   s.add_dependency 'rbnacl', '~> 7.1'
   s.add_dependency 'string-obfuscator', '~> 0.1'
 
-  # # REMOVE ME
-  # s.add_dependency 'bigdecimal', '>= 0'  # to address ruby warning by multi_xml
-  # s.add_dependency 'csv', '>= 0'         # to address ruby warning by httparty
-
-  s.metadata['rubygems_mfa_required'] = 'true'
+  s.metadata = {
+    'bug_tracker_uri'       => 'https://github.com/dannyben/secret_hub/issues',
+    'changelog_uri'         => 'https://github.com/dannyben/secret_hub/blob/master/CHANGELOG.md',
+    'source_code_uri'       => 'https://github.com/dannyben/secret_hub',
+    'rubygems_mfa_required' => 'true',
+  }
 end
