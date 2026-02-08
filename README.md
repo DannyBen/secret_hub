@@ -1,6 +1,6 @@
 # SecretHub - GitHub Secrets CLI
 
-![repocard](repocard.svg)
+![repocard](https://repocard.dannyben.com/svg/secret_hub.svg)
 
 SecretHub lets you easily manage your GitHub secrets from the command line
 with support for bulk operations and organization secrets.
